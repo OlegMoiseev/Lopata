@@ -1,6 +1,6 @@
 #include "workWithCamera.h"
 
-#pragma comment (lib, "opencv_world330.lib")
+#pragma comment (lib, "opencv_world331.lib")
 
 int main()
 {
