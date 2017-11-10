@@ -3,7 +3,6 @@
 
 #include <winsock2.h>
 #include <string>
-#include <iostream>
 #include <array>
 
 #pragma comment(lib, "ws2_32.lib")

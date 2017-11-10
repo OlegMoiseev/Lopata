@@ -147,7 +147,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CameraCalibration.h" />
-    <ClInclude Include="Globals.h" />
     <ClInclude Include="ImuModule.h" />
     <ClInclude Include="LopataFinder.h" />
     <ClInclude Include="LopataObject.h" />

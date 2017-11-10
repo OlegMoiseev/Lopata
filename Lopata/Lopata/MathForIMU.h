@@ -70,5 +70,6 @@ void ñorrectCoordinates(int& roll, Lopata &obj, Vector& axis, const float realPi
 
 void calculateCoordinates(Lopata &obj, const float& realPixelDistanceBetweenDiodes);
 
+void scalingCoordinates(Lopata& lopata);
 
 #endif

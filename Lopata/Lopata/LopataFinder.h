@@ -9,22 +9,69 @@
 
 class LopataFinder
 {
+	/**
+	 * \brief Camera from OpenCV
+	 */
 	cv::VideoCapture _webCamera;
+	/**
+	 * \brief Calibration of camera by Timur
+	 */
 	timur::CameraCalibration _camCalib;
+	/**
+	 * \brief Size of capture: rows
+	 */
 	int _rows;
+	/**
+	 * \brief Size of capture: columns
+	 */
 	int _cols;
-	cv::Ptr<cv::SimpleBlobDetector> _primaryBlobDetectorDark, _blobDetectorBright;
-	cv::SimpleBlobDetector::Params _parametersForPrimaryDetectorDark, _parametersForPrimaryDetectorBright;
+	/**
+	 * \brief Initializing of detector of dark areas
+	 */
+	cv::Ptr<cv::SimpleBlobDetector> _primaryBlobDetectorDark;
+	/**
+	* \brief Initializing of detector of bright areas
+	*/
+	cv::Ptr<cv::SimpleBlobDetector> _blobDetectorBright;
+	/**
+	 * \brief Initializing of parameters for dark detector
+	 */
+	cv::SimpleBlobDetector::Params _parametersForPrimaryDetectorDark;
+	/**
+	* \brief Initializing of parameters for bright detector
+	 */
+	cv::SimpleBlobDetector::Params _parametersForPrimaryDetectorBright;
 
+	/**
+	 * \brief Flag of first occurence of two points of Lopata
+	 */
 	bool _firstOccurrenceOfTwoPoints = true;
 
+	/**
+	 * \brief Matrix for raw image from camera
+	 */
 	cv::Mat _rawImageFromCamera;
 
-	std::pair<cv::KeyPoint, cv::KeyPoint> _previousPoints; // Variable to save old coordinates of two points
+	/**
+	 * \brief Variable to save old coordinates of two points
+	 */
+	std::pair<cv::KeyPoint, cv::KeyPoint> _previousPoints;
+	/**
+	 * \brief Matrix with raw BGR image translated into HSV form
+	 */
 	cv::Mat _hsvMatrixOfRawImage;
-	std::vector<cv::Mat> _channelsOfHsvImage; // Vectors of matrixes - to split HSV image on channels
+	/**
+	 * \brief Vector of matrixes with 3 channels of HSV image
+	 */
+	std::vector<cv::Mat> _channelsOfHsvImage;
+	/**
+	 * \brief Array of 3 vectors of KeyPoints for each channel
+	 */
 	std::array<std::vector<cv::KeyPoint>, 3> _keypointsForEachChannel;
 
+	/**
+	 * \brief Function to set variables _rows and _cols
+	 */
 	void frameSizeDetermination()
 	{
 		cv::Mat rawImageFromCamera;
@@ -34,6 +81,9 @@ class LopataFinder
 		std::cout << _cols << "x" << _rows << std::endl;
 	}
 
+	/**
+	 * \brief Function to set parameters for blob detectors
+	 */
 	void detectorParamsSetup()
 	{
 		_parametersForPrimaryDetectorDark.filterByColor = true;
@@ -85,6 +135,14 @@ class LopataFinder
 		_parametersForPrimaryDetectorBright.minInertiaRatio = 0.3;
 	}
 
+	/**
+	 * \brief Function to get distance between two points, given by their coordinates on the plane
+	 * \param[in] firstX X coordinate of first point
+	 * \param[in] secondX Y coordinate of first point
+	 * \param[in] firstY X coordinate of second point
+	 * \param[in] secondY Y coordinate of second point
+	 * \return Distance between points
+	 */
 	float getDistanceBetweenPoints(const unsigned& firstX, const unsigned& secondX, const unsigned& firstY,
 		const unsigned& secondY) const
 	{
@@ -93,12 +151,22 @@ class LopataFinder
 			0.5));
 	}
 
+	/**
+	 * \brief Function of getting undistorted image from camera
+	 */
 	void getImageFromCamera()
 	{
 		_webCamera >> _rawImageFromCamera;
 		_rawImageFromCamera = _camCalib.undistort(_rawImageFromCamera);
 	}
 
+	/**
+	 * \brief Function of detecting keypoints on the image
+	 * \param[in] primaryBlobDetector Blob detector, which will do the work
+	 * \param[in] channelsOfHsvImage Image, on which will be detected keypoints
+	 * \param[in] keypointsForEachChannel Detected keypoints
+	 * \param[in] matrixOfKeypointsForOneChannel Matrix with drawn keypoints
+	 */
 	static void detectKeypoints(cv::Ptr<cv::SimpleBlobDetector> primaryBlobDetector, const cv::Mat channelsOfHsvImage,
 		std::vector<cv::KeyPoint> keypointsForEachChannel, cv::Mat& matrixOfKeypointsForOneChannel)
 	{
@@ -114,6 +182,11 @@ class LopataFinder
 
 public:
 
+	/**
+	 * \brief Constructor for finder of the Lopata
+	 * \param cam Used camera
+	 * \param calib Used calibration
+	 */
 	explicit LopataFinder(cv::VideoCapture &cam, timur::CameraCalibration &calib):_webCamera(cam), _camCalib(calib)
 	{
 		if (!_webCamera.isOpened())
@@ -130,11 +203,18 @@ public:
 		_blobDetectorBright = cv::SimpleBlobDetector::create(_parametersForPrimaryDetectorBright);
 	}
 
+	/**
+	 * \brief Function of occurence of two points
+	 */
 	void firstOccurrenceFalse()
 	{
 		_firstOccurrenceOfTwoPoints = false;
 	}
 
+	/**
+	 * \brief Function of detection diodes on the Lopata
+	 * \param[out] obj Object whose diodes we're finding
+	 */
 	void detectDiodes(Lopata &obj)
 	{
 		std::array<cv::Mat, 3> matrixOfKeypointsForOneChannel = {
@@ -176,6 +256,13 @@ public:
 		_blobDetectorBright->detect(matrixOfSumKeypointsFromAllChannels, obj._resultKeypointsOfDetectedDiodes);
 	}
 
+	/**
+	 * \brief Function of final processing of gotten data and send it to robot, if it is possible
+	 * \param[in] imu IMU sensor
+	 * \param[in] robo Robot which we control
+	 * \param[in] obj Lopata object
+	 * \param[in] imuThread Thread of getting data from IMU
+	 */
 	void cameraDataProcessing(PololuImuV5 &imu, robot::FanucM20iA &robo, Lopata &obj, std::thread& imuThread)
 	{
 		if (_firstOccurrenceOfTwoPoints && obj._resultKeypointsOfDetectedDiodes.size() == 2)
@@ -242,6 +329,10 @@ public:
 		}
 	}
 
+	/**
+	 * \brief Function of drawing diodes and their common sensor on the raw and clear images
+	 * \param[in] obj The object whose diodes will be drawn
+	 */
 	void drawKeypoints(Lopata &obj)
 	{
 		cv::Mat matrixOfDiodes = cv::Mat::zeros(_rows, _cols, CV_8UC1);

@@ -1,5 +1,6 @@
 #include "Robots.h"
 #include <sstream>
+#include <iostream>
 #include "LopataObject.h"
 
 struct ExtremeValuesMax
@@ -24,7 +25,8 @@ struct MultConstants
 	const int _degrees = 1000;
 } mult;
 
-robot::FanucM20iA::FanucM20iA(const int c) : _connect(c)
+robot::FanucM20iA::FanucM20iA(const int c)
+	: _connect(c)
 {
 	if (_connect)
 	{
@@ -73,7 +75,6 @@ void robot::FanucM20iA::info() const
 bool robot::FanucM20iA::start()
 {
 	if (WSAStartup(0x202, reinterpret_cast<WSADATA *>(&_buff[0])))
-		// Вызываем включение библиотеки работы с сокетами, инициализация WinsockAPI
 	{
 		std::cout << "WSAStart error %d" << WSAGetLastError() << std::endl;
 		return false;
@@ -134,13 +135,12 @@ bool robot::FanucM20iA::finish() const
 	int iResult;
 	if ((iResult = shutdown(_mySock, SD_SEND)) == SOCKET_ERROR)
 	{
-		printf("Shutdown failed with error: %d\n", WSAGetLastError());
+		std::cout << "Shutdown failed with error: " << WSAGetLastError() << std::endl;
 		closesocket(_mySock);
 		closesocket(_sockrecv);
 		WSACleanup();
 		return false;
 	}
-	//=====================================================================
 	WSACleanup();
 	return true;
 }
@@ -154,7 +154,7 @@ void robot::FanucM20iA::createCartesianCoordinates(Lopata& obj)
 	robot::FanucM20iA::checkCoordsLimits(obj);
 }
 
-void robot::FanucM20iA::checkCoordsLimits(Lopata &obj)
+void robot::FanucM20iA::checkCoordsLimits(Lopata& obj)
 {
 	if (obj._cartesianCoordinates[0] > maxValueOf._x) obj._cartesianCoordinates[0] = maxValueOf._x;
 	if (obj._cartesianCoordinates[0] < minValueOf._x) obj._cartesianCoordinates[0] = minValueOf._x;
@@ -179,46 +179,7 @@ void robot::FanucM20iA::sendCoordinates(Lopata& obj) const
 	}
 }
 
-//const char* robot::FanucM20iA::createStringToSend(int& xToRobot, int& yToRobot, int& zToRobot,
-//                                                  std::array<float, 3>& degreesForRobot,
-//                                                  std::array<float, 3>& degreesOld)
-//{
-//	std::ostringstream tmpBuf;
-//	const int tmpSeg = 10, tmpTypeOfMoving = 2, tmpControl = 0;
-//
-//	const int minDeltaDegrees = 1;
-//	if (abs(degreesOld[0] - degreesForRobot[0]) > minDeltaDegrees || abs(degreesOld[1] - degreesForRobot[1]) >
-//		minDeltaDegrees || abs(degreesOld[2] - degreesForRobot[2]) > minDeltaDegrees)
-//	{
-//		tmpBuf << xToRobot << ' ' << yToRobot << ' ' << zToRobot << ' '
-//			<< static_cast<int>(degreesForRobot[0] * mult._degrees) << ' '
-//			<< static_cast<int>(degreesForRobot[1] * mult._degrees) << ' '
-//			<< static_cast<int>(degreesForRobot[2] * mult._degrees) << ' '
-//			<< tmpSeg << ' ' << tmpTypeOfMoving << ' ' << tmpControl;
-//
-//		for (int i = 0; i < 3; ++i)
-//		{
-//			degreesOld[i] = degreesForRobot[i];
-//		}
-//
-//		return _strdup(tmpBuf.str().c_str());
-//	}
-//
-//	tmpBuf << xToRobot << ' ' << yToRobot << ' ' << zToRobot << ' '
-//		<< static_cast<int>(degreesOld[0] * mult._degrees) << ' '
-//		<< static_cast<int>(degreesOld[1] * mult._degrees) << ' '
-//		<< static_cast<int>(degreesOld[2] * mult._degrees) << ' '
-//		<< tmpSeg << ' ' << tmpTypeOfMoving << ' ' << tmpControl;
-//
-//	for (int i = 0; i < 3; ++i)
-//	{
-//		degreesOld[i] = degreesForRobot[i];
-//	}
-//
-//	return _strdup(tmpBuf.str().c_str());
-//}
-
-void robot::FanucM20iA::thresholdFilterDegrees(Lopata& obj, std::ostringstream &tmpBuf)
+void robot::FanucM20iA::thresholdFilterDegrees(Lopata& obj, std::ostringstream& tmpBuf)
 {
 	const int minDeltaDegrees = 1;
 	for (int i = 0; i < 3; ++i)
@@ -234,25 +195,25 @@ void robot::FanucM20iA::thresholdFilterDegrees(Lopata& obj, std::ostringstream &
 	}
 }
 
-void robot::FanucM20iA::thresholdFilterCartesianCoordinates(Lopata& obj, std::ostringstream &tmpBuf)
+void robot::FanucM20iA::thresholdFilterCartesianCoordinates(Lopata& obj, std::ostringstream& tmpBuf)
 {
 	const int minDeltaMillimeters = 10;
 	for (int i = 0; i < 3; ++i)
 	{
 		if (abs(obj._oldCartesianCoordinates[i] - obj._cartesianCoordinates[i]) > minDeltaMillimeters)
 		{
-			std::cout << "YES!!!" << std::endl;
+			// std::cout << "YES!!!" << std::endl;
 			tmpBuf << obj._cartesianCoordinates[i] << ' ';
 		}
 		else
 		{
-			std::cout << "NO!!!" << std::endl;
+			// std::cout << "NO!!!" << std::endl;
 			tmpBuf << obj._oldCartesianCoordinates[i] << ' ';
 		}
 	}
 }
 
-const char* robot::FanucM20iA::createStringToSend(Lopata &obj)
+const char* robot::FanucM20iA::createStringToSend(Lopata& obj)
 {
 	std::ostringstream tmpBuf;
 	const int tmpSeg = 10, tmpTypeOfMoving = 2, tmpControl = 0;

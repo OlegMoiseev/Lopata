@@ -6,13 +6,34 @@
 #include <time.h>
 #include "MathForIMU.h"
 
+/*
+ * \TODO take out all methods
+ */
+/**
+ * \brief Class of IMU module Pololu v5
+ */
 class PololuImuV5
 {
 private:
+	/**
+	 * \brief Announsment of using COM port
+	 */
 	HANDLE _hSerial = nullptr;
+	/**
+	 * \brief Name of using COM port
+	 */
 	const LPCTSTR _sPortName;
+	/**
+	 * \brief Flag of stopping read to synchronize flows
+	 */
 	bool _stopReading = false;
 
+	/**
+	 * \brief Function of initializing of COM port
+	 * \return 0 if all was OK
+	 * \return 100* if something went wrong
+	 * \TODO rewrite with exceptions
+	 */
 	int initComPortImu()
 	{
 		_hSerial = ::CreateFile(_sPortName, GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
@@ -57,6 +78,9 @@ private:
 		return 0;
 	}
 
+	/**
+	 * \brief Start work with IMU module
+	 */
 	void startImu()
 	{
 		if (initComPortImu() == 0)
@@ -88,22 +112,37 @@ private:
 	}
 
 public:
-	explicit PololuImuV5(const LPCTSTR sPortName = L"COM3") : _sPortName(sPortName)
+	/**
+	 * \brief Constructor with starting work with IMU sensor
+	 * \param[in] sPortName Name of the port, to which sensor connected
+	 */
+	explicit PololuImuV5(const LPCTSTR sPortName = L"COM3")
+		: _sPortName(sPortName)
 	{
 		startImu();
 	}
 
+	/**
+	 * \brief Allow data reading from sensor
+	 */
 	void startReading()
 	{
 		_stopReading = false;
 	}
 
+	/**
+	 * \brief Forbid data reading from sensor
+	 */
 	void stopReading()
 	{
 		_stopReading = true;
 	}
 
-	void readComImu(Quaternion& d) const
+	/**
+	 * \brief Function of data reading from sensor
+	 * \param[out] q Data output in the form of a quaternion
+	 */
+	void readComImu(Quaternion& q) const
 	{
 		DWORD iSize;
 #ifdef DEBUG
@@ -130,13 +169,13 @@ public:
 
 			switch (i)
 			{
-			case 0: d._w = atof(sum);
+			case 0: q._w = atof(sum);
 				break;
-			case 1: d._x = atof(sum);
+			case 1: q._x = atof(sum);
 				break;
-			case 2: d._y = atof(sum);
+			case 2: q._y = atof(sum);
 				break;
-			default: d._z = atof(sum);
+			default: q._z = atof(sum);
 				break;
 			}
 		}

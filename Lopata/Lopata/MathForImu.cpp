@@ -160,6 +160,13 @@ void craftRotationMat(const float rad, float& x, float& y, float& z, float m[3][
 	m[2][2] = cos(rad) + (1 - cos(rad)) * z * z;
 }
 
+void scalingCoordinates(Lopata& lopata)
+{
+	const auto relation = lopata._altitude / CALIBRATED_HEIGTH;
+	lopata._centerXCoordinatesOfLopata *= relation;
+	lopata._centerYCoordinatesOfLopata *= relation;
+}
+
 void ñorrectCoordinates(int& roll, Lopata &obj, Vector& axis, const float realPixelDistanceBetweenDiodes)
 {
 	
@@ -220,6 +227,9 @@ void ñorrectCoordinates(int& roll, Lopata &obj, Vector& axis, const float realPi
 	obj._altitude -= mVect2._z;
 	obj._centerXCoordinatesOfLopata += mVect2._x;
 	obj._centerYCoordinatesOfLopata += mVect2._y;
+
+	scalingCoordinates(obj);
+
 }
 
 void calculateCoordinates(Lopata &obj, const float& realPixelDistanceBetweenDiodes)

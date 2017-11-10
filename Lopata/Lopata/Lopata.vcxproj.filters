@@ -18,9 +18,6 @@
     <ClInclude Include="CameraCalibration.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="ImuModule.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
