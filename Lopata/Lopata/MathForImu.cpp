@@ -2,9 +2,9 @@
 #include "LopataObject.h"
 #include <iostream>
 
-const float PI = acos(-1);
-const float HALF_PI = PI / 2;
-const float MORE_PI = PI * 3 / 2;
+const double PI = acos(-1);
+const double HALF_PI = PI / 2;
+const double MORE_PI = PI * 3 / 2;
 
 const int CALIBRATED_PIXEL_DISTANCE_BETWEEN_DIODES = 236;
 const int CALIBRATED_HEIGTH = 50;
@@ -21,7 +21,7 @@ Quaternion Quaternion::inverse() const
 	return Quaternion(_w, -_x, -_y, -_z);
 }
 
-float Quaternion::lengthSqr() const
+double Quaternion::lengthSqr() const
 {
 	return _w * _w + _x * _x + _y * _y + _z * _z;
 }
@@ -29,7 +29,7 @@ float Quaternion::lengthSqr() const
 Quaternion Quaternion::invForMult() const
 {
 	Quaternion tmp = this->inverse();
-	const float tmpL = this->lengthSqr();
+	const double tmpL = this->lengthSqr();
 	tmp._w /= tmpL;
 	tmp._x /= tmpL;
 	tmp._y /= tmpL;
@@ -45,20 +45,20 @@ return os;
 }
 
 
-float Vector::length() const
+double Vector::length() const
 {
 	return std::pow(_x * _x + _y * _y + _z * _z, 0.5);
 }
 
 void Vector::normalize()
 {
-	const float tmp = this->length();
+	const double tmp = this->length();
 	_x /= tmp;
 	_y /= tmp;
 	_z /= tmp;
 }
 
-void Vector::scale(const float coeff)
+void Vector::scale(const double coeff)
 {
 	_x *= coeff;
 	_y *= coeff;
@@ -105,38 +105,38 @@ Vector quatTransformVector(const Quaternion& q, Vector& v)
 	return qVector;
 }
 
-float vectorDotProduct(Vector& a, Vector& b)
+double vectorDotProduct(Vector& a, Vector& b)
 {
 	return a._x * b._x + a._y * b._y + a._z * b._z;
 }
 
-void quaternionToEulerianAngle(const Quaternion& q, float& roll, float& pitch, float& yaw)
+void quaternionToEulerianAngle(const Quaternion& q, double& roll, double& pitch, double& yaw)
 {
-	const float ysqr = q._y * q._y;
+	const double ysqr = q._y * q._y;
 
 	// roll (x-axis rotation)
-	const float t0 = +2.0 * (q._w * q._x + q._y * q._z);
-	const float t1 = +1.0 - 2.0 * (q._x * q._x + ysqr);
+	const double t0 = +2.0 * (q._w * q._x + q._y * q._z);
+	const double t1 = +1.0 - 2.0 * (q._x * q._x + ysqr);
 	roll = std::atan2(t0, t1) / 3.1415 * 180.0;
 
 	// pitch (y-axis rotation)
-	float t2 = +2.0 * (q._w * q._y - q._z * q._x);
+	double t2 = +2.0 * (q._w * q._y - q._z * q._x);
 	t2 = t2 > 1.0 ? 1.0 : t2;
 	t2 = t2 < -1.0 ? -1.0 : t2;
 	pitch = std::asin(t2) / 3.1415 * 180.0;
 
 	// yaw (z-axis rotation)
-	const float t3 = +2.0 * (q._w * q._z + q._x * q._y);
-	const float t4 = +1.0 - 2.0 * (ysqr + q._z * q._z);
+	const double t3 = +2.0 * (q._w * q._z + q._x * q._y);
+	const double t4 = +1.0 - 2.0 * (ysqr + q._z * q._z);
 	yaw = std::atan2(t3, t4) / 3.1415 * 180.0;
 }
 
-float degreesToRad(int& deg)
+double degreesToRad(int& deg)
 {
 	return deg * PI / 180.;
 }
 
-Vector vectMultMat(Vector& v, float m[3][3])
+Vector vectMultMat(Vector& v, double m[3][3])
 {
 	Vector tmp;
 	tmp._x = v._x * m[0][0] + v._y * m[1][0] + v._z * m[2][0];
@@ -145,7 +145,7 @@ Vector vectMultMat(Vector& v, float m[3][3])
 	return tmp;
 }
 
-void craftRotationMat(const float rad, float& x, float& y, float& z, float m[3][3])
+void craftRotationMat(const double rad, double& x, double& y, double& z, double m[3][3])
 {
 	m[0][0] = cos(rad) + (1 - cos(rad)) * x * x;
 	m[0][1] = (1 - cos(rad)) * x * y - sin(rad) * z;
@@ -167,16 +167,17 @@ void scalingCoordinates(Lopata& lopata)
 	lopata._centerYCoordinatesOfLopata *= relation;
 }
 
-void ñorrectCoordinates(int& roll, Lopata &obj, Vector& axis, const float realPixelDistanceBetweenDiodes)
+void ñorrectCoordinates(Lopata &obj)
 {
 	
 	Vector tmpToCenter(0, 0, 1);
 	Vector v2Center = quatTransformVector(obj._quaternionOfLopataRotation, tmpToCenter);
 
-	float mTmp[3][3];
+	double mTmp[3][3];
 
 	system("cls");
 
+	const double roll = obj._eulerDegrees[0];
 	double angle = 0;
 	if (-45 < roll && roll <= 45)
 	{
@@ -216,11 +217,11 @@ void ñorrectCoordinates(int& roll, Lopata &obj, Vector& axis, const float realPi
 		}
 	}
 
-	craftRotationMat(angle, axis._x, axis._y, axis._z, mTmp); // create matrix to rotate vector from center to circle
+	craftRotationMat(angle, obj._axis._x, obj._axis._y, obj._axis._z, mTmp); // create matrix to rotate vector from center to circle
 	Vector mVect2 = vectMultMat(v2Center, mTmp); // rotate this vector into necessary quadrant
 	mVect2.normalize(); // normalize this vector 
 
-	const int tmpRadius = obj._radius*realPixelDistanceBetweenDiodes / obj._distBetweenDiodes;
+	const double tmpRadius = obj._radius*obj._realPixelDistanceBetweenDiodes / obj._distBetweenDiodes;
 	mVect2.scale(tmpRadius); // scale translation vector to real pixel size
 
 	// correct our Cartesian coordinates
@@ -228,28 +229,23 @@ void ñorrectCoordinates(int& roll, Lopata &obj, Vector& axis, const float realPi
 	obj._centerXCoordinatesOfLopata += mVect2._x;
 	obj._centerYCoordinatesOfLopata += mVect2._y;
 
-	scalingCoordinates(obj);
-
 }
 
-void calculateCoordinates(Lopata &obj, const float& realPixelDistanceBetweenDiodes)
+void ñoordinatesIntoThreeDimensional(Lopata &obj)
 {
 	Vector startVector(1, 0, 0);
 	const Vector normalForFlatOfTheCamera(0, 0, 1);
 
 	quaternionToEulerianAngle(obj._quaternionOfLopataRotation, obj._eulerDegrees[0], obj._eulerDegrees[1], obj._eulerDegrees[2]);
 	
-	Vector vTmp = quatTransformVector(obj._quaternionOfLopataRotation, startVector);
-	const float t = (normalForFlatOfTheCamera._x * vTmp._x + normalForFlatOfTheCamera._y * vTmp._y +
-		normalForFlatOfTheCamera._z * vTmp._z) / normalForFlatOfTheCamera.length();
-	Vector projectionVector(vTmp._x - t * normalForFlatOfTheCamera._x, vTmp._y - t * normalForFlatOfTheCamera._y,
-		vTmp._z - t * normalForFlatOfTheCamera._z);
+	obj._axis = quatTransformVector(obj._quaternionOfLopataRotation, startVector);
+	const double t = (normalForFlatOfTheCamera._x * obj._axis._x + normalForFlatOfTheCamera._y * obj._axis._y +
+		normalForFlatOfTheCamera._z * obj._axis._z) / normalForFlatOfTheCamera.length();
+	Vector projectionVector(obj._axis._x - t * normalForFlatOfTheCamera._x, obj._axis._y - t * normalForFlatOfTheCamera._y,
+		obj._axis._z - t * normalForFlatOfTheCamera._z);
 
-	const float cosAngle = vectorDotProduct(projectionVector, vTmp) / (projectionVector.length() * vTmp.length());
-	obj._altitude = CALIBRATED_PIXEL_DISTANCE_BETWEEN_DIODES / realPixelDistanceBetweenDiodes * cosAngle *
+	const double cosAngle = vectorDotProduct(projectionVector, obj._axis) / (projectionVector.length() * obj._axis.length());
+	obj._altitude = CALIBRATED_PIXEL_DISTANCE_BETWEEN_DIODES / obj._realPixelDistanceBetweenDiodes * cosAngle *
 		CALIBRATED_HEIGTH;
-
-	int roll = obj._eulerDegrees[0];
-	ñorrectCoordinates(roll, obj, vTmp, realPixelDistanceBetweenDiodes);
 }
 

@@ -8,13 +8,14 @@ struct Lopata
 {
 	unsigned int _centerXCoordinatesOfLopata;
 	unsigned int _centerYCoordinatesOfLopata;
-	float _altitude = 0.;
+	double _altitude = 0.;
 	Quaternion _quaternionOfLopataRotation;
-	const float _distBetweenDiodes = 25.;
-	const float _radius = 22;
-
-	std::array<float, 3> _eulerDegrees{{0., 0., 0.}};
-	std::array<float, 3> _oldEulerDegrees{{0., 0., 0.}};
+	const double _distBetweenDiodes = 25.;
+	double _realPixelDistanceBetweenDiodes;
+	const double _radius = 22;
+	Vector _axis;
+	std::array<double, 3> _eulerDegrees{{0., 0., 0.}};
+	std::array<double, 3> _oldEulerDegrees{{0., 0., 0.}};
 
 	std::vector<cv::KeyPoint> _resultKeypointsOfDetectedDiodes;
 
@@ -22,12 +23,5 @@ struct Lopata
 	std::array<int, 3> _cartesianCoordinates;
 	std::array<int, 3> _oldCartesianCoordinates{{0, 0, 0}};
 
-
-	void setCoordinates(unsigned int& x, unsigned int& y, unsigned int& z)
-	{
-		_centerXCoordinatesOfLopata = x;
-		_centerYCoordinatesOfLopata = y;
-		_altitude = z;
-	}
 };
 #endif // LOPATAOBJECT_H

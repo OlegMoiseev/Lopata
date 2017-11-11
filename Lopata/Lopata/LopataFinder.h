@@ -90,49 +90,49 @@ class LopataFinder
 		_parametersForPrimaryDetectorDark.blobColor = 0;
 
 		// Change thresholds
-		_parametersForPrimaryDetectorDark.minThreshold = 100;
-		_parametersForPrimaryDetectorDark.maxThreshold = 255;
+		_parametersForPrimaryDetectorDark.minThreshold = 100.f;
+		_parametersForPrimaryDetectorDark.maxThreshold = 255.f;
 		//parametersForPrimaryDetectorDark.thresholdStep = 1;
 
 		// Filter by Area.
 		_parametersForPrimaryDetectorDark.filterByArea = true;
-		_parametersForPrimaryDetectorDark.minArea = 36;
+		_parametersForPrimaryDetectorDark.minArea = 36.f;
 
 		// Filter by Circularity
 		_parametersForPrimaryDetectorDark.filterByCircularity = true;
-		_parametersForPrimaryDetectorDark.minCircularity = 0.7;
+		_parametersForPrimaryDetectorDark.minCircularity = 0.7f;
 
 		// Filter by Convexity
 		_parametersForPrimaryDetectorDark.filterByConvexity = true;
-		_parametersForPrimaryDetectorDark.minConvexity = 0.4;
+		_parametersForPrimaryDetectorDark.minConvexity = 0.4f;
 
 		// Filter by Inertia
 		_parametersForPrimaryDetectorDark.filterByInertia = true;
-		_parametersForPrimaryDetectorDark.minInertiaRatio = 0.3;
+		_parametersForPrimaryDetectorDark.minInertiaRatio = 0.3f;
 		//================================================================================
 		_parametersForPrimaryDetectorBright.filterByColor = true;
 		_parametersForPrimaryDetectorBright.blobColor = 255;
 
 		// Change thresholds
-		_parametersForPrimaryDetectorBright.minThreshold = 100;
-		_parametersForPrimaryDetectorBright.maxThreshold = 255;
+		_parametersForPrimaryDetectorBright.minThreshold = 100.f;
+		_parametersForPrimaryDetectorBright.maxThreshold = 255.f;
 		//parametersForPrimaryDetectorBright.thresholdStep = 1;
 
 		// Filter by Area.
 		_parametersForPrimaryDetectorBright.filterByArea = true;
-		_parametersForPrimaryDetectorBright.minArea = 36;
+		_parametersForPrimaryDetectorBright.minArea = 36.f;
 
 		// Filter by Circularity
 		_parametersForPrimaryDetectorBright.filterByCircularity = true;
-		_parametersForPrimaryDetectorBright.minCircularity = 0.7;
+		_parametersForPrimaryDetectorBright.minCircularity = 0.7f;
 
 		// Filter by Convexity
 		_parametersForPrimaryDetectorBright.filterByConvexity = true;
-		_parametersForPrimaryDetectorBright.minConvexity = 0.4;
+		_parametersForPrimaryDetectorBright.minConvexity = 0.4f;
 
 		// Filter by Inertia
 		_parametersForPrimaryDetectorBright.filterByInertia = true;
-		_parametersForPrimaryDetectorBright.minInertiaRatio = 0.3;
+		_parametersForPrimaryDetectorBright.minInertiaRatio = 0.3f;
 	}
 
 	/**
@@ -212,7 +212,8 @@ public:
 	}
 
 	/**
-	 * \brief Function of detection diodes on the Lopata
+	 * \brief Function of detection diodes on the image
+	 * Result of work - _resultKeypointsOfDetectedDiodes
 	 * \param[out] obj Object whose diodes we're finding
 	 */
 	void detectDiodes(Lopata &obj)
@@ -263,7 +264,7 @@ public:
 	 * \param[in] obj Lopata object
 	 * \param[in] imuThread Thread of getting data from IMU
 	 */
-	void cameraDataProcessing(PololuImuV5 &imu, robot::FanucM20iA &robo, Lopata &obj, std::thread& imuThread)
+	void calculateDiodesCoordinates(PololuImuV5 &imu, robot::FanucM20iA &robo, Lopata &obj, std::thread& imuThread)
 	{
 		if (_firstOccurrenceOfTwoPoints && obj._resultKeypointsOfDetectedDiodes.size() == 2)
 		{
@@ -306,20 +307,11 @@ public:
 				obj._centerXCoordinatesOfLopata = static_cast<unsigned int>((firstX + secondX) / 2);
 				obj._centerYCoordinatesOfLopata = static_cast<unsigned int>((firstY + secondY) / 2);
 
-				const float realPixelDistanceBetweenDiodes = getDistanceBetweenPoints(firstX, secondX, firstY, secondY);
-
-				//=======================================================================================================
+				obj._realPixelDistanceBetweenDiodes = getDistanceBetweenPoints(firstX, secondX, firstY, secondY);
 
 				imu.stopReading();
 				imuThread.join(); // End thread with IMU
-
-				calculateCoordinates(obj, realPixelDistanceBetweenDiodes);
-
-				std::cout << obj._centerXCoordinatesOfLopata << "\t" << obj._centerYCoordinatesOfLopata << "\t" << obj._altitude << std::endl;
-
-				robo.sendCoordinates(obj);
 				// avnike@outlook.com
-				//=======================================================================================================
 			}
 			else
 			{

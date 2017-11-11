@@ -150,8 +150,6 @@ void robot::FanucM20iA::createCartesianCoordinates(Lopata& obj)
 	obj._cartesianCoordinates[0] = maxValueOf._x - obj._centerYCoordinatesOfLopata * mult._x;
 	obj._cartesianCoordinates[1] = minValueOf._y + obj._centerXCoordinatesOfLopata * mult._y;
 	obj._cartesianCoordinates[2] = minValueOf._z + static_cast<int>(obj._altitude) * mult._z;
-
-	robot::FanucM20iA::checkCoordsLimits(obj);
 }
 
 void robot::FanucM20iA::checkCoordsLimits(Lopata& obj)
@@ -169,6 +167,7 @@ void robot::FanucM20iA::checkCoordsLimits(Lopata& obj)
 void robot::FanucM20iA::sendCoordinates(Lopata& obj) const
 {
 	robot::FanucM20iA::createCartesianCoordinates(obj);
+	robot::FanucM20iA::checkCoordsLimits(obj);
 
 	const char* sendbuf = robot::FanucM20iA::createStringToSend(obj);
 	std::cout << sendbuf << std::endl;

@@ -24,7 +24,17 @@ void detectControlHandlePosition(const bool& connection)
 
 		finder.detectDiodes(object);
 
-		finder.cameraDataProcessing(imu, robo, object, imuThread);
+		finder.calculateDiodesCoordinates(imu, robo, object, imuThread);
+
+		ñoordinatesIntoThreeDimensional(object);
+
+		std::cout << object._centerXCoordinatesOfLopata << "\t" << object._centerYCoordinatesOfLopata << "\t" << object._altitude << std::endl;
+
+		ñorrectCoordinates(object);
+
+		//scalingCoordinates(object);
+
+		robo.sendCoordinates(object);
 
 		finder.drawKeypoints(object);
 

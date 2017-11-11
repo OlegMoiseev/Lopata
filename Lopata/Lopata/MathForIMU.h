@@ -4,15 +4,16 @@
 #include <array>
 
 struct Lopata;
+
 class Quaternion
 {
 public:
-	float _w;
-	float _x;
-	float _y;
-	float _z;
+	double _w;
+	double _x;
+	double _y;
+	double _z;
 
-	explicit Quaternion(float a = 0., float b = 0., float c = 0., float d = 1.) : _w(a), _x(b), _y(c), _z(d)
+	explicit Quaternion(double a = 0., double b = 0., double c = 0., double d = 1.) : _w(a), _x(b), _y(c), _z(d)
 	{
 	}
 
@@ -20,7 +21,7 @@ public:
 
 	Quaternion inverse() const;
 
-	float lengthSqr() const;
+	double lengthSqr() const;
 
 	Quaternion invForMult() const;
 
@@ -30,19 +31,22 @@ public:
 class Vector
 {
 public:
-	float _x;
-	float _y;
-	float _z;
+	double _x;
+	double _y;
+	double _z;
 
-	explicit Vector(float a = 0., float b = 0., float c = 1.) : _x(a), _y(b), _z(c)
+	explicit Vector(double a = 0., double b = 0., double c = 1.)
+		: _x(a),
+		  _y(b),
+		  _z(c)
 	{
 	}
 
-	float length() const;
+	double length() const;
 
 	void normalize();
 
-	void scale(const float coeff);
+	void scale(const double coeff);
 
 	friend std::ostream& operator<<(std::ostream& os, const Vector& v);
 };
@@ -53,23 +57,32 @@ Quaternion quatMultVect(const Quaternion& a, Vector& b);
 
 Vector quatTransformVector(const Quaternion& q, Vector& v);
 
-float vectorDotProduct(Vector& a, Vector& b);
+double vectorDotProduct(Vector& a, Vector& b);
 
-//=======================================================================================================================
-// Function of translating quaternion to euler angles
-//=======================================================================================================================
-void quaternionToEulerianAngle(const Quaternion& q, float& roll, float& pitch, float& yaw);
+void quaternionToEulerianAngle(const Quaternion& q, double& roll, double& pitch, double& yaw);
 
-float degreesToRad(int& deg);
+double degreesToRad(int& deg);
 
-Vector vectMultMat(Vector& v, float m[3][3]);
+Vector vectMultMat(Vector& v, double m[3][3]);
 
-void craftRotationMat(const float rad, float& x, float& y, float& z, float m[3][3]);
+void craftRotationMat(const double rad, double& x, double& y, double& z, double m[3][3]);
 
-void ñorrectCoordinates(int& roll, Lopata &obj, Vector& axis, const float realPixelDistanceBetweenDiodes);
+/**
+ * \brief Correcting coordinates depending on the position of Lopata
+ * \param obj Lopata, the coordinates of which are adjusted
+ */
+void ñorrectCoordinates(Lopata& obj);
 
-void calculateCoordinates(Lopata &obj, const float& realPixelDistanceBetweenDiodes);
+/**
+ * \brief Calculating height of the Lopata
+ * \param obj Lopata, the coordinates of which are transformed
+ */
+void ñoordinatesIntoThreeDimensional(Lopata& obj);
 
+/**
+ * \brief Scaling coordinates depending on the height
+ * \param lopata Lopata, the coordinates of which are scaled
+ */
 void scalingCoordinates(Lopata& lopata);
 
 #endif
