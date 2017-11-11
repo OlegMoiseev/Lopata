@@ -238,6 +238,7 @@ void calculateCoordinates(Lopata &obj, const float& realPixelDistanceBetweenDiod
 	const Vector normalForFlatOfTheCamera(0, 0, 1);
 
 	quaternionToEulerianAngle(obj._quaternionOfLopataRotation, obj._eulerDegrees[0], obj._eulerDegrees[1], obj._eulerDegrees[2]);
+	
 	Vector vTmp = quatTransformVector(obj._quaternionOfLopataRotation, startVector);
 	const float t = (normalForFlatOfTheCamera._x * vTmp._x + normalForFlatOfTheCamera._y * vTmp._y +
 		normalForFlatOfTheCamera._z * vTmp._z) / normalForFlatOfTheCamera.length();

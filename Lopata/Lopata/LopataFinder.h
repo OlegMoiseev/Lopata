@@ -171,7 +171,7 @@ class LopataFinder
 		std::vector<cv::KeyPoint> keypointsForEachChannel, cv::Mat& matrixOfKeypointsForOneChannel)
 	{
 		primaryBlobDetector->detect(channelsOfHsvImage, keypointsForEachChannel);
-		for (size_t i = 0; i < keypointsForEachChannel.size(); ++i)
+		for (int i = 0; i < keypointsForEachChannel.size(); ++i)
 		{
 			cv::circle(matrixOfKeypointsForOneChannel,
 				cv::Point(static_cast<int>(keypointsForEachChannel[i].pt.x),
