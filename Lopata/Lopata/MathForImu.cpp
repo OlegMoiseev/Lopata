@@ -1,6 +1,10 @@
 #include "MathForIMU.h"
 #include "LopataObject.h"
 
+Quaternion::Quaternion(double a, double b, double c, double d): _w(a), _x(b), _y(c), _z(d)
+{
+}
+
 void Quaternion::operator=(Quaternion& q)
 {
 	_w = q._w;
@@ -37,6 +41,12 @@ os << q._w << "\t" << q._x << "\t" << q._y << "\t" << q._z;
 return os;
 }
 
+
+Vector::Vector(const double a, const double b, const double c): _x(a),
+                                                                _y(b),
+                                                                _z(c)
+{
+}
 
 double Vector::length() const
 {
