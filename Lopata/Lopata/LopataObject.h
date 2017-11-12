@@ -22,6 +22,19 @@ struct Lopata
 
 	std::array<int, 3> _cartesianCoordinates;
 	std::array<int, 3> _oldCartesianCoordinates{{0, 0, 0}};
+	/**
+	* \brief Correcting coordinates depending on the position of Lopata
+	*/
+	void ñorrectCoordinates();
 
+	/**
+	* \brief Calculating height of the Lopata
+	*/
+	void ñoordinatesIntoThreeDimensional();
+
+	/**
+	* \brief Scaling coordinates depending on the height
+	*/
+	void scalingCoordinates();
 };
 #endif // LOPATAOBJECT_H

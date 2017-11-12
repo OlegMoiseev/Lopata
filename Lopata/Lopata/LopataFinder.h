@@ -3,7 +3,6 @@
 
 #include <opencv2/opencv.hpp>
 #include "CameraCalibration.h"
-#include "MathForIMU.h"
 #include "LopataObject.h"
 #include <thread>
 

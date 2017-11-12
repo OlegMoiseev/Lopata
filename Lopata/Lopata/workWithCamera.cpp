@@ -28,13 +28,13 @@ void detectControlHandlePosition(const bool& connection)
 
 		finder.drawKeypoints(object);
 
-		ñoordinatesIntoThreeDimensional(object);
+		object.ñoordinatesIntoThreeDimensional();
 
 		// std::cout << object._centerXCoordinatesOfLopata << "\t" << object._centerYCoordinatesOfLopata << "\t" << object._altitude << std::endl;
 
-		ñorrectCoordinates(object);
+		object.ñorrectCoordinates();
 
-		scalingCoordinates(object);
+		object.scalingCoordinates();
 
 		robo.sendCoordinates(object);
 

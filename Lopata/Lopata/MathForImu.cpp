@@ -1,13 +1,6 @@
 #include "MathForIMU.h"
 #include "LopataObject.h"
-#include <iostream>
 
-const double PI = acos(-1);
-const double HALF_PI = PI / 2;
-const double MORE_PI = PI * 3 / 2;
-
-const int CALIBRATED_PIXEL_DISTANCE_BETWEEN_DIODES = 236;
-const int CALIBRATED_HEIGTH = 50;
 void Quaternion::operator=(Quaternion& q)
 {
 	_w = q._w;
@@ -133,7 +126,7 @@ void quaternionToEulerianAngle(const Quaternion& q, double& roll, double& pitch,
 
 double degreesToRad(int& deg)
 {
-	return deg * PI / 180.;
+	return deg * acos(-1) / 180.;
 }
 
 Vector vectMultMat(Vector& v, double m[3][3])
@@ -160,92 +153,4 @@ void craftRotationMat(const double rad, double& x, double& y, double& z, double 
 	m[2][2] = cos(rad) + (1 - cos(rad)) * z * z;
 }
 
-void scalingCoordinates(Lopata& lopata)
-{
-	const auto relation = lopata._altitude / CALIBRATED_HEIGTH;
-	lopata._centerXCoordinatesOfLopata *= relation;
-	lopata._centerYCoordinatesOfLopata *= relation;
-}
-
-void ñorrectCoordinates(Lopata &obj)
-{
-	
-	Vector tmpToCenter(0, 0, 1);
-	Vector v2Center = quatTransformVector(obj._quaternionOfLopataRotation, tmpToCenter);
-
-	double mTmp[3][3];
-
-	system("cls");
-
-	const double roll = obj._eulerDegrees[0];
-	double angle = 0.;
-	if (-45. < roll && roll <= 45.)
-	{
-		std::cout << roll << "\tUP" << std::endl;
-		angle = PI;
-	}
-	else
-	{
-		if (45. < roll && roll <= 135.)
-		{
-			std::cout << roll << "\tRIGHT" << std::endl;
-			angle = MORE_PI;
-		}
-		else
-		{
-			if (135. < roll && roll <= 180.)
-			{
-				std::cout << roll << "\tDOWN" << std::endl;
-				angle = 0.;
-			}
-			else
-			{
-				if (-180. < roll && roll <= -135.)
-				{
-					std::cout << roll << "\tDOWN" << std::endl;
-					angle = 0.;
-				}
-				else
-				{
-					if (-135. < roll && roll <= -45.)
-					{
-						std::cout << roll << "\tLEFT" << std::endl;
-						angle = HALF_PI;
-					}
-				}
-			}
-		}
-	}
-
-	craftRotationMat(angle, obj._axis._x, obj._axis._y, obj._axis._z, mTmp); // create matrix to rotate vector from center to circle
-	Vector mVect2 = vectMultMat(v2Center, mTmp); // rotate this vector into necessary quadrant
-	mVect2.normalize(); // normalize this vector 
-
-	const double tmpRadius = obj._radius*obj._realPixelDistanceBetweenDiodes / obj._distBetweenDiodes;
-	mVect2.scale(tmpRadius); // scale translation vector to real pixel size
-
-	// correct our Cartesian coordinates
-	obj._altitude -= mVect2._z;
-	obj._centerXCoordinatesOfLopata += mVect2._x;
-	obj._centerYCoordinatesOfLopata += mVect2._y;
-
-}
-
-void ñoordinatesIntoThreeDimensional(Lopata &obj)
-{
-	Vector startVector(1, 0, 0);
-	const Vector normalForFlatOfTheCamera(0, 0, 1);
-
-	quaternionToEulerianAngle(obj._quaternionOfLopataRotation, obj._eulerDegrees[0], obj._eulerDegrees[1], obj._eulerDegrees[2]);
-	
-	obj._axis = quatTransformVector(obj._quaternionOfLopataRotation, startVector);
-	const double t = (normalForFlatOfTheCamera._x * obj._axis._x + normalForFlatOfTheCamera._y * obj._axis._y +
-		normalForFlatOfTheCamera._z * obj._axis._z) / normalForFlatOfTheCamera.length();
-	Vector projectionVector(obj._axis._x - t * normalForFlatOfTheCamera._x, obj._axis._y - t * normalForFlatOfTheCamera._y,
-		obj._axis._z - t * normalForFlatOfTheCamera._z);
-
-	const double cosAngle = vectorDotProduct(projectionVector, obj._axis) / (projectionVector.length() * obj._axis.length());
-	obj._altitude = CALIBRATED_PIXEL_DISTANCE_BETWEEN_DIODES / obj._realPixelDistanceBetweenDiodes * cosAngle *
-		CALIBRATED_HEIGTH;
-}
 

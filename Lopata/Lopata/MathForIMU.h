@@ -67,22 +67,6 @@ Vector vectMultMat(Vector& v, double m[3][3]);
 
 void craftRotationMat(const double rad, double& x, double& y, double& z, double m[3][3]);
 
-/**
- * \brief Correcting coordinates depending on the position of Lopata
- * \param obj Lopata, the coordinates of which are adjusted
- */
-void ñorrectCoordinates(Lopata& obj);
 
-/**
- * \brief Calculating height of the Lopata
- * \param obj Lopata, the coordinates of which are transformed
- */
-void ñoordinatesIntoThreeDimensional(Lopata& obj);
-
-/**
- * \brief Scaling coordinates depending on the height
- * \param lopata Lopata, the coordinates of which are scaled
- */
-void scalingCoordinates(Lopata& lopata);
 
 #endif
