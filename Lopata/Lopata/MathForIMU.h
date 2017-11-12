@@ -35,7 +35,7 @@ public:
 	double _y;
 	double _z;
 
-	explicit Vector(double a = 0., double b = 0., double c = 1.)
+	explicit Vector(const double a = 0., const double b = 0., const double c = 1.)
 		: _x(a),
 		  _y(b),
 		  _z(c)
