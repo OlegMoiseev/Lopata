@@ -25,7 +25,7 @@ void Lopata::ñorrectCoordinates()
 
 	system("cls");
 
-	const double roll = _eulerDegrees[0];
+	const double roll = _eulerAngles[0];
 	double angle = 0.;
 	if (-45. < roll && roll <= 45.)
 	{
@@ -84,7 +84,7 @@ void Lopata::ñoordinatesIntoThreeDimensional()
 	Vector startVector(1, 0, 0);
 	const Vector normalForFlatOfTheCamera(0, 0, 1);
 
-	quaternionToEulerianAngle(_quaternionOfLopataRotation, _eulerDegrees[0], _eulerDegrees[1], _eulerDegrees[2]);
+	quaternionToEulerianAngle(_quaternionOfLopataRotation, _eulerAngles[0], _eulerAngles[1], _eulerAngles[2]);
 
 	_axis = quatTransformVector(_quaternionOfLopataRotation, startVector);
 	const double t = (normalForFlatOfTheCamera._x * _axis._x + normalForFlatOfTheCamera._y * _axis._y +

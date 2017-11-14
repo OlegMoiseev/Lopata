@@ -178,18 +178,18 @@ void robot::FanucM20iA::sendCoordinates(Lopata& obj) const
 	}
 }
 
-void robot::FanucM20iA::thresholdFilterDegrees(Lopata& obj, std::ostringstream& tmpBuf)
+void robot::FanucM20iA::thresholdFilterAngles(Lopata& obj, std::ostringstream& tmpBuf)
 {
 	const int minDeltaDegrees = 1;
 	for (int i = 0; i < 3; ++i)
 	{
-		if (abs(obj._oldEulerDegrees[i] - obj._eulerDegrees[i]) > minDeltaDegrees)
+		if (abs(obj._oldEulerAngles[i] - obj._eulerAngles[i]) > minDeltaDegrees)
 		{
-			tmpBuf << static_cast<int>(obj._eulerDegrees[i] * mult._degrees) << ' ';
+			tmpBuf << static_cast<int>(obj._eulerAngles[i] * mult._degrees) << ' ';
 		}
 		else
 		{
-			tmpBuf << static_cast<int>(obj._oldEulerDegrees[i] * mult._degrees) << ' ';
+			tmpBuf << static_cast<int>(obj._oldEulerAngles[i] * mult._degrees) << ' ';
 		}
 	}
 }
@@ -218,14 +218,14 @@ const char* robot::FanucM20iA::createStringToSend(Lopata& obj)
 	const int tmpSeg = 10, tmpTypeOfMoving = 2, tmpControl = 0;
 
 	thresholdFilterCartesianCoordinates(obj, tmpBuf);
-	thresholdFilterDegrees(obj, tmpBuf);
+	thresholdFilterAngles(obj, tmpBuf);
 
 	tmpBuf << tmpSeg << ' ' << tmpTypeOfMoving << ' ' << tmpControl;
 
 	for (int i = 0; i < 3; ++i)
 	{
 		obj._oldCartesianCoordinates[i] = obj._cartesianCoordinates[i];
-		obj._oldEulerDegrees[i] = obj._eulerDegrees[i];
+		obj._oldEulerAngles[i] = obj._eulerAngles[i];
 	}
 
 	return _strdup(tmpBuf.str().c_str());
