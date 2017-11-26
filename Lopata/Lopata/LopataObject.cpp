@@ -10,9 +10,12 @@ const int CALIBRATED_HEIGTH = 50;
 
 void Lopata::scalingCoordinates()
 {
-	const auto relation = _altitude / CALIBRATED_HEIGTH;
-	_centerXCoordinatesOfLopata *= relation;
-	_centerYCoordinatesOfLopata *= relation;
+	const double rel = CALIBRATED_PIXEL_DISTANCE_BETWEEN_DIODES / _distBetweenDiodes;
+	_xBound = 640 * rel;
+	_yBound = 480 * rel;
+
+	_centerXCoordinatesOfLopata *= _xBound / 640;
+	_centerYCoordinatesOfLopata *= _yBound / 480;
 }
 
 void Lopata::ñorrectCoordinates()

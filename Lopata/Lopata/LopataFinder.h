@@ -327,8 +327,14 @@ public:
 	void drawKeypoints(Lopata &obj)
 	{
 		cv::Mat matrixOfDiodes = cv::Mat::zeros(_rows, _cols, CV_8UC1);
+		const cv::Point pt1(320, 15);
+
+
 		if (!_firstOccurrenceOfTwoPoints)
 		{
+			cv::putText(matrixOfDiodes, std::to_string(obj._xBound), cv::Point(320, 15), cv::HersheyFonts::FONT_HERSHEY_COMPLEX, .5, 255);
+			cv::putText(matrixOfDiodes, std::to_string(obj._yBound), cv::Point(0, 240), cv::HersheyFonts::FONT_HERSHEY_COMPLEX, .5, 255);
+
 			cv::circle(matrixOfDiodes,
 				cv::Point(static_cast<int>(obj._resultKeypointsOfDetectedDiodes[0].pt.x),
 					static_cast<int>(obj._resultKeypointsOfDetectedDiodes[0].pt.y)),

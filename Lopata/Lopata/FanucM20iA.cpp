@@ -132,8 +132,7 @@ bool robot::FanucM20iA::standCoord(const int num) const
 
 bool robot::FanucM20iA::finish() const
 {
-	int iResult;
-	if ((iResult = shutdown(_mySock, SD_SEND)) == SOCKET_ERROR)
+	if (shutdown(_mySock, SD_SEND) == SOCKET_ERROR)
 	{
 		std::cout << "Shutdown failed with error: " << WSAGetLastError() << std::endl;
 		closesocket(_mySock);
@@ -170,7 +169,7 @@ void robot::FanucM20iA::sendCoordinates(Lopata& obj) const
 	robot::FanucM20iA::checkCoordsLimits(obj);
 
 	const char* sendbuf = robot::FanucM20iA::createStringToSend(obj);
-	std::cout << sendbuf << std::endl;
+	//std::cout << sendbuf << std::endl;
 
 	if (this->canSendCoordinates())
 	{

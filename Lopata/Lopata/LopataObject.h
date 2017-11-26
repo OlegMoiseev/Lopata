@@ -3,12 +3,16 @@
 
 #include "MathForIMU.h"
 #include <opencv2/core/types.hpp>
+#include <array>
 
 /**
  * \brief Struct which accumulate all data about Lopata
  */
 struct Lopata
 {
+	double _xBound;
+	double _yBound;
+
 	/**
 	 * \brief X coordinate of Lopata
 	 */
@@ -54,7 +58,6 @@ struct Lopata
 	 * \brief Keypoints on the image
 	 */
 	std::vector<cv::KeyPoint> _resultKeypointsOfDetectedDiodes;
-
 
 	/**
 	 * \brief Cartesian coordinates of the Lopata

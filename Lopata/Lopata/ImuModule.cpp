@@ -39,8 +39,8 @@ int PololuImuV5::initComPortImu()
 
 	do
 	{
-		ReadFile(_hSerial, &skip, 1, &iSize, nullptr); // получаем 1 байт кода ответа
-	} while (skip != 'd'); // скип того, что приходит с Ардуино во время инициализации
+		ReadFile(_hSerial, &skip, 1, &iSize, nullptr);  // get 1 byte of answer
+	} while (skip != 'd'); // skip all, what's happening with Arduino during initializing
 	std::cout << "Skipped successfylly!" << std::endl;
 	return 0;
 }
@@ -104,9 +104,6 @@ void PololuImuV5::stopReading()
 void PololuImuV5::readComImu(Quaternion& q) const
 {
 	DWORD iSize;
-#ifdef DEBUG
-	std::cout << "Accel&Gyro: ";
-#endif // DEBUG
 	for (int i = 0; i < 4; ++i)
 	{
 		char sum[64];
@@ -114,13 +111,13 @@ void PololuImuV5::readComImu(Quaternion& q) const
 		char in = '1';
 		while (in != ' ' && in != '\n' && in != '\r' && in != '\t')
 		{
-			ReadFile(_hSerial, &in, 1, &iSize, nullptr); // получаем 1 байт ответа
+			ReadFile(_hSerial, &in, 1, &iSize, nullptr);  // get 1 byte of answer
 			if (i == 0 && in == '\r')
 			{
-				// при старте передачи датчик шлёт мусор, а именно два байта: '\r\n', которые мы должны откинуть, чтобы получить дальнеёшую работу без смещения
-				// поэтому, идём сюда, если в начале передачи мы получили '\r'
-				ReadFile(_hSerial, &in, 1, &iSize, nullptr); // считываем символ '\n'
-				ReadFile(_hSerial, &in, 1, &iSize, nullptr); // считываем уже актуальные данные
+				// At the start sensor send trash: two bytes - '\r', '\n', which we should skip to do further work without any offset
+				// So, we go here, if we got '\r' at the start of the broadcast
+				ReadFile(_hSerial, &in, 1, &iSize, nullptr);  // Read the symbol '\n'
+				ReadFile(_hSerial, &in, 1, &iSize, nullptr);  // Read already topical data
 			}
 			sum[j] = in;
 			++j;

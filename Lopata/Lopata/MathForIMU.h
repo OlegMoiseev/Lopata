@@ -1,11 +1,9 @@
 #ifndef MATH_FOR_IMU
 #define MATH_FOR_IMU
-
-#include <array>
+#include <ostream>
 
 //TODO: move fields to private
 
-struct Lopata;
 
 class Quaternion
 {
@@ -152,9 +150,9 @@ double vectorDotProduct(Vector& a, Vector& b);
 /**
  * \brief Function of converting quaternion into three angles
  * \param[in] q Quaternion for converting
- * \param[out] roll Roll from quaternion
- * \param[out] pitch Pitch from quaternion
- * \param[out] yaw Yaw from quaternion
+ * \param[out] roll Roll from quaternion in degrees
+ * \param[out] pitch Pitch from quaternion in degrees
+ * \param[out] yaw Yaw from quaternion in degrees
  */
 void quaternionToEulerianAngle(const Quaternion& q, double& roll, double& pitch, double& yaw);
 

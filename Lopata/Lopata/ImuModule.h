@@ -27,7 +27,7 @@ private:
 	 * \brief Function of initializing of COM port
 	 * \return 0 if all was OK
 	 * \return 100* if something went wrong
-	 * \TODO rewrite with exceptions
+	 * \TODO rewrite
 	 */
 	int initComPortImu();
 

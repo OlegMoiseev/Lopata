@@ -148,7 +148,7 @@ namespace robot {
 
 		/**
 		 * \brief Function of sending coordinates to the robot with all checks
-		 * \param obj 
+		 * \param obj Lopata, which coordinates need to send
 		 */
 		void sendCoordinates(Lopata& obj) const;
 	};
