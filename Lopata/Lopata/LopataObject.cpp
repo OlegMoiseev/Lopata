@@ -10,10 +10,10 @@ const int CALIBRATED_HEIGTH = 50;
 
 void Lopata::scalingCoordinates()
 {
-	const double rel = CALIBRATED_PIXEL_DISTANCE_BETWEEN_DIODES / _distBetweenDiodes;
+	const double rel = CALIBRATED_PIXEL_DISTANCE_BETWEEN_DIODES / _realPixelDistanceBetweenDiodes;
 	_xBound = 640 * rel;
 	_yBound = 480 * rel;
-
+	std::cout << _xBound << ' ' << _yBound << '\n';
 	_centerXCoordinatesOfLopata *= _xBound / 640;
 	_centerYCoordinatesOfLopata *= _yBound / 480;
 }
