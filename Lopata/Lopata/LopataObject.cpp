@@ -13,7 +13,6 @@ void Lopata::scalingCoordinates()
 	const double rel = CALIBRATED_PIXEL_DISTANCE_BETWEEN_DIODES / _realPixelDistanceBetweenDiodes;
 	_xBound = 640 * rel;
 	_yBound = 480 * rel;
-	std::cout << _xBound << ' ' << _yBound << '\n';
 	_centerXCoordinatesOfLopata *= _xBound / 640;
 	_centerYCoordinatesOfLopata *= _yBound / 480;
 }
@@ -96,6 +95,6 @@ void Lopata::ñoordinatesIntoThreeDimensional()
 		_axis._z - t * normalForFlatOfTheCamera._z);
 
 	const double cosAngle = vectorDotProduct(projectionVector, _axis) / (projectionVector.length() * _axis.length());
-	_altitude = CALIBRATED_PIXEL_DISTANCE_BETWEEN_DIODES / _realPixelDistanceBetweenDiodes * cosAngle *
-		CALIBRATED_HEIGTH;
+	_altitude = CALIBRATED_PIXEL_DISTANCE_BETWEEN_DIODES / _realPixelDistanceBetweenDiodes *
+		cosAngle * CALIBRATED_HEIGTH;
 }

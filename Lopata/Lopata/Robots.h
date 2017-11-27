@@ -41,7 +41,10 @@ namespace robot {
 		/**
 		 * \brief Robot's IP
 		 */
-		std::string _tmpAddrString = "192.168.0.21";
+		//std::string _tmpAddrString = "192.168.0.21";
+		
+		std::string _tmpAddrString = "127.0.0.1";
+
 		/**
 		 * \brief Buffer to initialize WinSock
 		 */

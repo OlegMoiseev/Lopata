@@ -327,8 +327,6 @@ public:
 	void drawKeypoints(Lopata &obj)
 	{
 		cv::Mat matrixOfDiodes = cv::Mat::zeros(_rows, _cols, CV_8UC1);
-		const cv::Point pt1(320, 15);
-
 
 		if (!_firstOccurrenceOfTwoPoints)
 		{

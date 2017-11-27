@@ -4,7 +4,7 @@
 
 int main()
 {
-	const bool connection = false;
+	const bool connection = true;
 	cvVersionOnScreen();
 	detectControlHandlePosition(connection);
 	return 0;
