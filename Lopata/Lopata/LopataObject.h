@@ -21,6 +21,11 @@ struct Lopata
 	double _yBound;
 
 	/**
+	* \brief Flag of allowing send coordinates to the robot
+	*/
+	bool sendCoordinates;
+
+	/**
 	 * \brief X coordinate of Lopata
 	 */
 	unsigned int _centerXCoordinatesOfLopata;
@@ -74,6 +79,7 @@ struct Lopata
 	* \brief Cartesian coordinates from the previous iteration of the algorithm
 	*/
 	std::array<int, 3> _oldCartesianCoordinates{{0, 0, 0}};
+
 	/**
 	* \brief Correcting coordinates depending on the position of Lopata
 	*/
@@ -88,5 +94,14 @@ struct Lopata
 	* \brief Scaling coordinates depending on the height
 	*/
 	void scalingCoordinates();
+
+	/**
+	* \brief Allowing send data to the robot
+	*/
+	void allowSend();
+	/**
+	* \brief Forbidding send data to the robot
+	*/
+	void forbidSend();
 };
 #endif // LOPATAOBJECT_H

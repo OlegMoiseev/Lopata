@@ -160,6 +160,7 @@
     <ClCompile Include="CameraCalibration.cpp" />
     <ClCompile Include="FanucM20iA.cpp" />
     <ClCompile Include="ImuModule.cpp" />
+    <ClCompile Include="LopataFinder.cpp" />
     <ClCompile Include="LopataObject.cpp" />
     <ClCompile Include="MathForImu.cpp" />
     <ClCompile Include="Source.cpp" />

@@ -1,9 +1,10 @@
 #ifndef ROBOTS
 #define ROBOTS
 
-#include <winsock2.h>
 #include <string>
 #include <array>
+
+#include <winsock2.h>
 
 #pragma comment(lib, "ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
@@ -54,10 +55,6 @@ namespace robot {
 		 * \brief Flag of allowing connection to the robot
 		 */
 		bool _connect;
-		/**
-		* \brief Flag of allowing send coordinates to the robot
-		*/
-		bool _sendCoordinates;
 
 		/**
 		 * \brief Function of the initializing connection to the robot
@@ -136,18 +133,10 @@ namespace robot {
 		bool sendany(const char* str) const;
 
 		/**
-		 * \brief Allowing send data to the robot
-		 */
-		void allowSend();
-		/**
-		* \brief Forbidding send data to the robot
-		*/
-		void forbidSend();
-		/**
 		 * \brief Checking possibility of sending data to the robot
 		 * \return True if send allowed, else - False
 		 */
-		bool canSendCoordinates() const;
+		bool canSendCoordinates(Lopata &obj) const;
 
 		/**
 		 * \brief Function of sending coordinates to the robot with all checks

@@ -23,7 +23,7 @@ struct MultConstants
 	const int _y = 1000;
 	const int _z = 1000;
 	const int _degrees = 1000;
-} mult;
+} MULT;
 
 robot::FanucM20iA::FanucM20iA(const int c)
 	: _connect(c)
@@ -38,19 +38,9 @@ robot::FanucM20iA::FanucM20iA(const int c)
 	}
 }
 
-void robot::FanucM20iA::allowSend()
+bool robot::FanucM20iA::canSendCoordinates(Lopata &obj) const
 {
-	_sendCoordinates = true;
-}
-
-void robot::FanucM20iA::forbidSend()
-{
-	_sendCoordinates = false;
-}
-
-bool robot::FanucM20iA::canSendCoordinates() const
-{
-	return _sendCoordinates & _connect;
+	return obj.sendCoordinates & _connect;
 }
 
 bool robot::FanucM20iA::initSockets()
@@ -146,9 +136,9 @@ bool robot::FanucM20iA::finish() const
 
 void robot::FanucM20iA::createCartesianCoordinates(Lopata& obj)
 {
-	obj._cartesianCoordinates[0] = maxValueOf._x - obj._centerYCoordinatesOfLopata * mult._x;
-	obj._cartesianCoordinates[1] = minValueOf._y + obj._centerXCoordinatesOfLopata * mult._y;
-	obj._cartesianCoordinates[2] = minValueOf._z + static_cast<int>(obj._altitude) * mult._z;
+	obj._cartesianCoordinates[0] = maxValueOf._x - obj._centerYCoordinatesOfLopata * MULT._x;
+	obj._cartesianCoordinates[1] = minValueOf._y + obj._centerXCoordinatesOfLopata * MULT._y;
+	obj._cartesianCoordinates[2] = minValueOf._z + static_cast<int>(obj._altitude) * MULT._z;
 }
 
 void robot::FanucM20iA::checkCoordsLimits(Lopata& obj)
@@ -171,7 +161,7 @@ void robot::FanucM20iA::sendCoordinates(Lopata& obj) const
 	const char* sendbuf = robot::FanucM20iA::createStringToSend(obj);
 	std::cout << sendbuf << std::endl;
 
-	if (this->canSendCoordinates())
+	if (this->canSendCoordinates(obj))
 	{
 		this->sendany(sendbuf);
 	}
@@ -184,11 +174,11 @@ void robot::FanucM20iA::thresholdFilterAngles(Lopata& obj, std::ostringstream& t
 	{
 		if (abs(obj._oldEulerAngles[i] - obj._eulerAngles[i]) > minDeltaDegrees)
 		{
-			tmpBuf << static_cast<int>(obj._eulerAngles[i] * mult._degrees) << ' ';
+			tmpBuf << static_cast<int>(obj._eulerAngles[i] * MULT._degrees) << ' ';
 		}
 		else
 		{
-			tmpBuf << static_cast<int>(obj._oldEulerAngles[i] * mult._degrees) << ' ';
+			tmpBuf << static_cast<int>(obj._oldEulerAngles[i] * MULT._degrees) << ' ';
 		}
 	}
 }

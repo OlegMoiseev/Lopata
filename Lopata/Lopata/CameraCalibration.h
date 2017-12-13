@@ -4,10 +4,13 @@
 */
 #ifndef CAMERA_CALIBRATION_2017
 #define CAMERA_CALIBRATION_2017
-#include <opencv2/core.hpp>
-#include <opencv2/videoio.hpp>
+
 #include <vector>
 #include <string>
+
+#include <opencv2/core.hpp>
+#include <opencv2/videoio.hpp>
+
 
 namespace timur
 {

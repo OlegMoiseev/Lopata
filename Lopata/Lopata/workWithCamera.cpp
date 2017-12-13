@@ -24,7 +24,7 @@ void detectControlHandlePosition(const bool& connection)
 
 		finder.detectDiodes(object);
 
-		finder.calculateDiodesCoordinates(imu, robo, object, imuThread);
+		finder.calculateDiodesCoordinates(imu, object, imuThread);
 
 		object.calculateThirdCoordinate();
 

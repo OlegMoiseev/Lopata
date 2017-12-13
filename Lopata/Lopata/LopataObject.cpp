@@ -80,3 +80,14 @@ void Lopata::calculateThirdCoordinate()
 	_altitude = _calibrationPixelDistanceBetweenDiodes / _lenghtPixelProjectionBetweenDiodes * cosAngle *
 		_calibrationHeigth;
 }
+
+
+void Lopata::allowSend()
+{
+	sendCoordinates = true;
+}
+
+void Lopata::forbidSend()
+{
+	sendCoordinates = false;
+}
