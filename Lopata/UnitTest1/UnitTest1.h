@@ -18,9 +18,12 @@ namespace unitTestsLopata
 		Lopata _lopataToTest;
 	public:
 
-		TEST_METHOD(testMethod1);
-		TEST_METHOD(testMethod2);
-		TEST_METHOD(testMethod3);
+		TEST_METHOD(testMinBound);
+		TEST_METHOD(testMaxBound);
+		TEST_METHOD(testMid0);
+		TEST_METHOD(testMid1);
+		TEST_METHOD(testMid2);
+		TEST_METHOD(testNonTableMid0);
 
 	};
 }
