@@ -14,7 +14,7 @@ void detectControlHandlePosition(const bool& connection)
 	PololuImuV5 imu(L"COM3");
 
 	cv::VideoCapture webCamera(0);
-	timur::CamCalibWi camCalib("CamCalib");
+	timur::CamCalibWi camCalib("CamCalib.txt");
 
 	LopataFinder finder(webCamera, camCalib);
 	Lopata object;
@@ -30,6 +30,9 @@ void detectControlHandlePosition(const bool& connection)
 		finder.calculateDiodesCoordinates(imu, object, imuThread);
 
 		object.calculateThirdCoordinate();
+
+		system("cls");
+		std::cout << "Before correcting: " << object._altitude << std::endl;
 
 		object.ñorrectCoordinates();
 

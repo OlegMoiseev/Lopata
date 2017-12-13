@@ -20,8 +20,6 @@ void Lopata::ñorrectCoordinates()
 
 	double mTmp[3][3];
 
-	system("cls");
-
 	const double roll = _eulerAngles[0];
 	double angle = 0.;
 
@@ -76,11 +74,25 @@ void Lopata::calculateThirdCoordinate()
 	const double t = (normalForFlatOfTheCamera._x * _axis._x + normalForFlatOfTheCamera._y * _axis._y +
 		normalForFlatOfTheCamera._z * _axis._z) / normalForFlatOfTheCamera.length();
 	Vector projectionVector(_axis._x - t * normalForFlatOfTheCamera._x, _axis._y - t * normalForFlatOfTheCamera._y,
-	                        _axis._z - t * normalForFlatOfTheCamera._z);
+		_axis._z - t * normalForFlatOfTheCamera._z);
 
 	const double cosAngle = vectorDotProduct(projectionVector, _axis) / (projectionVector.length() * _axis.length());
-	_altitude = _calibrationPixelDistanceBetweenDiodes / _lenghtPixelProjectionBetweenDiodes * cosAngle *
-		_calibrationHeigth;
+	/*_altitude = _calibrationPixelDistanceBetweenDiodes / _lenghtPixelProjectionBetweenDiodes * cosAngle *
+		_calibrationHeigth;*/
+
+	const double hypotenuse = _lenghtPixelProjectionBetweenDiodes / cosAngle;
+
+	//_altitude = (hypotenuse - hIter->second)*(hIter->first - hIterNext->first)/(hIterNext->second - hIter->second) + hIter->first;
+	//_altitude = (hypotenuse - hIter->first)*(hIter->second - hIterNext->second) / (hIterNext->first - hIter->first) + hIter->second;
+	_altitude = calculatePointOnGraph(hypotenuse);
+}
+
+double Lopata::calculatePointOnGraph(const double& hyp) const
+{
+	const auto hIter = calibrateTable.lower_bound(hyp);
+	auto hIterNext = hIter;
+	++hIterNext;
+	return (hyp - hIter->first)*(hIter->second - hIterNext->second) / (hIterNext->first - hIter->first) + hIter->second;
 }
 
 

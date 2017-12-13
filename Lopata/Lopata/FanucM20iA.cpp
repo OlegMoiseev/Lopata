@@ -161,7 +161,6 @@ void robot::FanucM20iA::sendCoordinates(Lopata& obj) const
 	robot::FanucM20iA::checkCoordsLimits(obj);
 
 	const char* sendbuf = robot::FanucM20iA::createStringToSend(obj);
-	std::cout << sendbuf << std::endl;
 
 	if (this->canSendCoordinates(obj))
 	{
