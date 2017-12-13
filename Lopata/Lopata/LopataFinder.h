@@ -11,6 +11,7 @@
 #include "ImuModule.h"
 #include "CamCalibWI.h"
 
+
 class LopataFinder
 {
 	/**

@@ -1,6 +1,7 @@
 #include "MathForIMU.h"
 #include "LopataObject.h"
 
+
 Quaternion::Quaternion(double a, double b, double c, double d): _w(a), _x(b), _y(c), _z(d)
 {
 }

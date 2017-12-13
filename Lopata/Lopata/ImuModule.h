@@ -2,7 +2,9 @@
 #define IMU_MODULE_H
 
 #include <Windows.h>
+
 #include "MathForIMU.h"
+
 
 /**
  * \brief Class of IMU module Pololu v5

@@ -1,6 +1,8 @@
-#include "ImuModule.h"
 #include <iostream>
 #include <time.h>
+
+#include "ImuModule.h"
+
 
 int PololuImuV5::initComPortImu()
 {

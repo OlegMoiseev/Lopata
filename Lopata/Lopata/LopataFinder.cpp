@@ -1,5 +1,6 @@
 #include "LopataFinder.h"
 
+
 void LopataFinder::frameSizeDetermination()
 {
 	cv::Mat rawImageFromCamera;

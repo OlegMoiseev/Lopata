@@ -1,9 +1,12 @@
 #ifndef LOPATAOBJECT_H
 #define LOPATAOBJECT_H
 
-#include "MathForIMU.h"
-#include <opencv2/core/types.hpp>
 #include <array>
+
+#include <opencv2/core/types.hpp>
+
+#include "MathForIMU.h"
+
 
 /**
  * \brief Struct which accumulate all data about Lopata
@@ -19,6 +22,8 @@ struct Lopata
 
 	double _xBound;
 	double _yBound;
+
+
 
 	/**
 	* \brief Flag of allowing send coordinates to the robot

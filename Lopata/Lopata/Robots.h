@@ -10,6 +10,7 @@
 #pragma comment (lib, "Mswsock.lib")
 #pragma comment (lib, "AdvApi32.lib")
 
+
 /**
  * \brief Struct which accumulate all data about object
  */

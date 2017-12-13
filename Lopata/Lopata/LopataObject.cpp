@@ -1,5 +1,7 @@
-#include "LopataObject.h"
 #include <iostream>
+
+#include "LopataObject.h"
+
 
 void Lopata::scalingCoordinates()
 {

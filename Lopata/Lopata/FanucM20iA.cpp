@@ -1,7 +1,9 @@
-#include "Robots.h"
-#include <sstream>
 #include <iostream>
+#include <sstream>
+
+#include "Robots.h"
 #include "LopataObject.h"
+
 
 struct ExtremeValuesMax
 {

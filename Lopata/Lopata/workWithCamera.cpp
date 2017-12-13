@@ -1,9 +1,11 @@
+#include <thread>
+
 #include "workWithCamera.h"
 #include "CamCalibWI.h"
 #include "Robots.h"
 #include "ImuModule.h"
 #include "LopataFinder.h"
-#include <thread>
+
 
 void detectControlHandlePosition(const bool& connection)
 {
