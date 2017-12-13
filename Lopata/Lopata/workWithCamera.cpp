@@ -26,13 +26,13 @@ void detectControlHandlePosition(const bool& connection)
 
 		finder.calculateDiodesCoordinates(imu, robo, object, imuThread);
 
-		object.ñoordinatesIntoThreeDimensional();
+		object.calculateThirdCoordinate();
 
 		object.ñorrectCoordinates();
 
 		std::cout << object._centerXCoordinatesOfLopata << '\t' << object._centerYCoordinatesOfLopata << '\t' << object._altitude << '\n';
 
-		object.scalingCoordinates();
+		//object.scalingCoordinates();
 
 		robo.sendCoordinates(object);
 

@@ -142,12 +142,14 @@ class LopataFinder
 	 * \param[in] secondY Y coordinate of second point
 	 * \return Distance between points
 	 */
-	float getDistanceBetweenPoints(const unsigned& firstX, const unsigned& secondX, const unsigned& firstY,
-		const unsigned& secondY) const
+	float getDistanceBetweenPoints(const unsigned& firstX, const unsigned& secondX,
+	                               const unsigned& firstY,
+	                               const unsigned& secondY) const
 	{
 		return static_cast<float>(std::pow(
-			(firstX - secondX) * (firstX - secondX) + (firstY - secondY) * (firstY - secondY),
-			0.5));
+		                                   (firstX - secondX) * (firstX - secondX) + (firstY - secondY) *
+		                                   (firstY - secondY),
+		                                   0.5));
 	}
 
 	/**
@@ -166,16 +168,18 @@ class LopataFinder
 	 * \param[in] keypointsForEachChannel Detected keypoints
 	 * \param[in] matrixOfKeypointsForOneChannel Matrix with drawn keypoints
 	 */
-	static void detectKeypoints(cv::Ptr<cv::SimpleBlobDetector> primaryBlobDetector, const cv::Mat channelsOfHsvImage,
-		std::vector<cv::KeyPoint> keypointsForEachChannel, cv::Mat& matrixOfKeypointsForOneChannel)
+	static void detectKeypoints(cv::Ptr<cv::SimpleBlobDetector> primaryBlobDetector,
+	                            const cv::Mat channelsOfHsvImage,
+	                            std::vector<cv::KeyPoint> keypointsForEachChannel,
+	                            cv::Mat& matrixOfKeypointsForOneChannel)
 	{
 		primaryBlobDetector->detect(channelsOfHsvImage, keypointsForEachChannel);
 		for (int i = 0; i < keypointsForEachChannel.size(); ++i)
 		{
 			cv::circle(matrixOfKeypointsForOneChannel,
-				cv::Point(static_cast<int>(keypointsForEachChannel[i].pt.x),
-					static_cast<int>(keypointsForEachChannel[i].pt.y)),
-				static_cast<int>(keypointsForEachChannel[i].size / 2), cv::Scalar(255), -1);
+			           cv::Point(static_cast<int>(keypointsForEachChannel[i].pt.x),
+			                     static_cast<int>(keypointsForEachChannel[i].pt.y)),
+			           static_cast<int>(keypointsForEachChannel[i].size / 2), cv::Scalar(255), -1);
 		}
 	}
 
@@ -186,7 +190,9 @@ public:
 	 * \param cam Used camera
 	 * \param calib Used calibration
 	 */
-	explicit LopataFinder(cv::VideoCapture &cam, timur::CameraCalibration &calib):_webCamera(cam), _camCalib(calib)
+	explicit LopataFinder(cv::VideoCapture& cam, timur::CameraCalibration& calib)
+		: _webCamera(cam),
+		  _camCalib(calib)
 	{
 		if (!_webCamera.isOpened())
 		{
@@ -215,27 +221,33 @@ public:
 	 * Result of work - _resultKeypointsOfDetectedDiodes
 	 * \param[out] obj Object whose diodes we're finding
 	 */
-	void detectDiodes(Lopata &obj)
+	void detectDiodes(Lopata& obj)
 	{
 		std::array<cv::Mat, 3> matrixOfKeypointsForOneChannel = {
-			cv::Mat::zeros(_rows, _cols, CV_8UC1), cv::Mat::zeros(_rows, _cols, CV_8UC1), cv::Mat::zeros(_rows, _cols, CV_8UC1)
+			cv::Mat::zeros(_rows, _cols, CV_8UC1),
+			cv::Mat::zeros(_rows, _cols, CV_8UC1),
+			cv::Mat::zeros(_rows, _cols, CV_8UC1)
 		};
 		cv::Mat matrixOfSumKeypointsFromAllChannels(_rows, _cols, CV_8UC1, cv::Scalar(0, 0, 0));
 
 		getImageFromCamera();
 
-		cv::cvtColor(_rawImageFromCamera, _hsvMatrixOfRawImage, CV_BGR2HSV); // convert camera image format from BGR to HSV
+		cv::cvtColor(_rawImageFromCamera, _hsvMatrixOfRawImage, CV_BGR2HSV);
+		// convert camera image format from BGR to HSV
 		split(_hsvMatrixOfRawImage, _channelsOfHsvImage);
 		cv::threshold(_channelsOfHsvImage[2], _channelsOfHsvImage[2], 250, 255, CV_THRESH_BINARY);
 
 		//----------------------------------------------------------------
 		// Start threads with OpenCV
-		std::thread t1Thread(detectKeypoints, _primaryBlobDetectorDark, _channelsOfHsvImage[0], _keypointsForEachChannel[0],
-			std::ref(matrixOfKeypointsForOneChannel[0]));
-		std::thread t2Thread(detectKeypoints, _primaryBlobDetectorDark, _channelsOfHsvImage[1], _keypointsForEachChannel[1],
-			std::ref(matrixOfKeypointsForOneChannel[1]));
-		std::thread t3Thread(detectKeypoints, _blobDetectorBright, _channelsOfHsvImage[2], _keypointsForEachChannel[2],
-			std::ref(matrixOfKeypointsForOneChannel[2]));
+		std::thread t1Thread(detectKeypoints, _primaryBlobDetectorDark, _channelsOfHsvImage[0],
+		                     _keypointsForEachChannel[0],
+		                     std::ref(matrixOfKeypointsForOneChannel[0]));
+		std::thread t2Thread(detectKeypoints, _primaryBlobDetectorDark, _channelsOfHsvImage[1],
+		                     _keypointsForEachChannel[1],
+		                     std::ref(matrixOfKeypointsForOneChannel[1]));
+		std::thread t3Thread(detectKeypoints, _blobDetectorBright, _channelsOfHsvImage[2],
+		                     _keypointsForEachChannel[2],
+		                     std::ref(matrixOfKeypointsForOneChannel[2]));
 
 		// End threads with OpenCV
 		t1Thread.join();
@@ -247,13 +259,17 @@ public:
 		{
 			for (int j = 0; j < _cols; ++j)
 			{
-				matrixOfSumKeypointsFromAllChannels.at<uchar>(i, j) = matrixOfKeypointsForOneChannel[0].at<uchar>(i, j) / 3 +
-					matrixOfKeypointsForOneChannel[1].at<uchar>(i, j) / 3 + matrixOfKeypointsForOneChannel[2].at<uchar>(i, j) / 3;
+				matrixOfSumKeypointsFromAllChannels.at<uchar>(i, j) =
+						matrixOfKeypointsForOneChannel[0].at<uchar>(i, j) / 3 +
+						matrixOfKeypointsForOneChannel[1].at<uchar>(i, j) / 3 + matrixOfKeypointsForOneChannel[2].at<
+							uchar>(i, j) / 3;
 			}
 		}
-		cv::threshold(matrixOfSumKeypointsFromAllChannels, matrixOfSumKeypointsFromAllChannels, 169, 255, CV_THRESH_BINARY);
+		cv::threshold(matrixOfSumKeypointsFromAllChannels, matrixOfSumKeypointsFromAllChannels, 169, 255,
+		              CV_THRESH_BINARY);
 
-		_blobDetectorBright->detect(matrixOfSumKeypointsFromAllChannels, obj._resultKeypointsOfDetectedDiodes);
+		_blobDetectorBright->detect(matrixOfSumKeypointsFromAllChannels,
+		                            obj._resultKeypointsOfDetectedDiodes);
 	}
 
 	/**
@@ -263,7 +279,8 @@ public:
 	 * \param[in] obj Lopata object
 	 * \param[in] imuThread Thread of getting data from IMU
 	 */
-	void calculateDiodesCoordinates(PololuImuV5 &imu, robot::FanucM20iA &robo, Lopata &obj, std::thread& imuThread)
+	void calculateDiodesCoordinates(PololuImuV5& imu, robot::FanucM20iA& robo, Lopata& obj,
+	                                std::thread& imuThread)
 	{
 		if (_firstOccurrenceOfTwoPoints && obj._resultKeypointsOfDetectedDiodes.size() == 2)
 		{
@@ -285,7 +302,7 @@ public:
 					obj._resultKeypointsOfDetectedDiodes.push_back(_previousPoints.second);
 					robo.forbidSend();
 				}
-				if (obj._resultKeypointsOfDetectedDiodes.size() == 0)
+				if (obj._resultKeypointsOfDetectedDiodes.empty())
 				{
 					obj._resultKeypointsOfDetectedDiodes.push_back(_previousPoints.first);
 					obj._resultKeypointsOfDetectedDiodes.push_back(_previousPoints.second);
@@ -298,15 +315,22 @@ public:
 				_previousPoints.first = obj._resultKeypointsOfDetectedDiodes[0];
 				_previousPoints.second = obj._resultKeypointsOfDetectedDiodes[1];
 
-				const unsigned int firstX = static_cast<unsigned int>(obj._resultKeypointsOfDetectedDiodes[0].pt.x);
-				const unsigned int secondX = static_cast<unsigned int>(obj._resultKeypointsOfDetectedDiodes[1].pt.x);
-				const unsigned int firstY = static_cast<unsigned int>(obj._resultKeypointsOfDetectedDiodes[0].pt.y);
-				const unsigned int secondY = static_cast<unsigned int>(obj._resultKeypointsOfDetectedDiodes[1].pt.y);
+				const unsigned int firstX = static_cast<unsigned int>(obj._resultKeypointsOfDetectedDiodes[0].pt
+				                                                                                             .x
+				);
+				const unsigned int secondX = static_cast<unsigned int>(obj._resultKeypointsOfDetectedDiodes[1].
+					pt.x);
+				const unsigned int firstY = static_cast<unsigned int>(obj._resultKeypointsOfDetectedDiodes[0].pt
+				                                                                                             .y
+				);
+				const unsigned int secondY = static_cast<unsigned int>(obj._resultKeypointsOfDetectedDiodes[1].
+					pt.y);
 
 				obj._centerXCoordinatesOfLopata = static_cast<unsigned int>((firstX + secondX) / 2);
 				obj._centerYCoordinatesOfLopata = static_cast<unsigned int>((firstY + secondY) / 2);
 
-				obj._realPixelDistanceBetweenDiodes = getDistanceBetweenPoints(firstX, secondX, firstY, secondY);
+				obj._lenghtPixelProjectionBetweenDiodes = getDistanceBetweenPoints(firstX, secondX, firstY,
+				                                                                   secondY);
 
 				imu.stopReading();
 				imuThread.join(); // End thread with IMU
@@ -324,37 +348,78 @@ public:
 	 * \brief Function of drawing diodes and their common sensor on the raw and clear images
 	 * \param[in] obj The object whose diodes will be drawn
 	 */
-	void drawKeypoints(Lopata &obj)
+	void drawKeypoints(Lopata& obj)
 	{
-		cv::Mat matrixOfDiodes = cv::Mat::zeros(_rows, _cols, CV_8UC1);
-		const cv::Point pt1(320, 15);
+		cv::Mat matrixOfDiodes = cv::Mat::zeros(_rows, _cols, cv::DataType<double>::type);
+		cv::Mat m1 = cv::Mat::zeros(2, 2, cv::DataType<double>::type);
 
+		const cv::Mat startPointerPosition(1, 2, cv::DataType<double>::type, {70, 1});
+
+		constexpr int compassSide = 150;
+
+		const cv::Point center(compassSide/2, compassSide/2);
 
 		if (!_firstOccurrenceOfTwoPoints)
 		{
-			cv::putText(matrixOfDiodes, std::to_string(obj._xBound), cv::Point(320, 15), cv::HersheyFonts::FONT_HERSHEY_COMPLEX, .5, 255);
-			cv::putText(matrixOfDiodes, std::to_string(obj._yBound), cv::Point(0, 240), cv::HersheyFonts::FONT_HERSHEY_COMPLEX, .5, 255);
+			cv::Mat background = createCompassMatrix(obj, center, startPointerPosition);
+
+			for (std::size_t i = 0; i < compassSide; ++i)
+			{
+				for (std::size_t j = 0; j < compassSide; ++j)
+				{
+					matrixOfDiodes.at<double>(i, j) = background.at<double>(i, j);
+				}
+			}
+
+
+			cv::putText(matrixOfDiodes, std::to_string(obj._xBound), cv::Point(320, 15),
+			            cv::HersheyFonts::FONT_HERSHEY_COMPLEX, .5, 255);
+			cv::putText(matrixOfDiodes, std::to_string(obj._yBound), cv::Point(0, 240),
+			            cv::HersheyFonts::FONT_HERSHEY_COMPLEX, .5, 255);
 
 			cv::circle(matrixOfDiodes,
-				cv::Point(static_cast<int>(obj._resultKeypointsOfDetectedDiodes[0].pt.x),
-					static_cast<int>(obj._resultKeypointsOfDetectedDiodes[0].pt.y)),
-				static_cast<int>(obj._resultKeypointsOfDetectedDiodes[0].size / 2), cv::Scalar(255), -1);
+			           cv::Point(static_cast<int>(obj._resultKeypointsOfDetectedDiodes[0].pt.x),
+			                     static_cast<int>(obj._resultKeypointsOfDetectedDiodes[0].pt.y)),
+			           static_cast<int>(obj._resultKeypointsOfDetectedDiodes[0].size / 2), cv::Scalar(255),
+			           -1);
 			cv::circle(matrixOfDiodes,
-				cv::Point(static_cast<int>(obj._resultKeypointsOfDetectedDiodes[1].pt.x),
-					static_cast<int>(obj._resultKeypointsOfDetectedDiodes[1].pt.y)),
-				static_cast<int>(obj._resultKeypointsOfDetectedDiodes[1].size / 2), cv::Scalar(255), -1);
+			           cv::Point(static_cast<int>(obj._resultKeypointsOfDetectedDiodes[1].pt.x),
+			                     static_cast<int>(obj._resultKeypointsOfDetectedDiodes[1].pt.y)),
+			           static_cast<int>(obj._resultKeypointsOfDetectedDiodes[1].size / 2), cv::Scalar(255),
+			           -1);
 
 			cv::circle(matrixOfDiodes,
-				cv::Point(obj._centerXCoordinatesOfLopata, obj._centerYCoordinatesOfLopata),
-				static_cast<int>(obj._resultKeypointsOfDetectedDiodes[1].size / 2), cv::Scalar(255), 2);
+			           cv::Point(obj._centerXCoordinatesOfLopata, obj._centerYCoordinatesOfLopata),
+			           static_cast<int>(obj._resultKeypointsOfDetectedDiodes[1].size / 2), cv::Scalar(255),
+			           2);
 
 			cv::circle(_rawImageFromCamera,
-				cv::Point(obj._centerXCoordinatesOfLopata, obj._centerYCoordinatesOfLopata),
-				static_cast<int>(obj._resultKeypointsOfDetectedDiodes[1].size / 2), cv::Scalar(255), 2);
+			           cv::Point(obj._centerXCoordinatesOfLopata, obj._centerYCoordinatesOfLopata),
+			           static_cast<int>(obj._resultKeypointsOfDetectedDiodes[1].size / 2), cv::Scalar(255),
+			           2);
 		}
 
 		cv::imshow("Raw image from camera", _rawImageFromCamera);
 		cv::imshow("Detected diodes", matrixOfDiodes);
+	}
+
+	cv::Mat createCompassMatrix(Lopata& obj, const cv::Point center, const cv::Mat tmp) const
+	{
+		cv::Mat background(cv::Mat::zeros(150, 150, cv::DataType<double>::type));
+
+		cv::circle(background, center, 50, 128);
+		cv::Mat m1(2, 2, cv::DataType<double>::type);
+
+		m1.at<double>(0, 0) = cos(obj._eulerAngles[2] * obj._pi / 180);
+		m1.at<double>(0, 1) = sin(obj._eulerAngles[2] * obj._pi / 180);
+		m1.at<double>(1, 0) = -sin(obj._eulerAngles[2] * obj._pi / 180);
+		m1.at<double>(1, 1) = cos(obj._eulerAngles[2] * obj._pi / 180);
+
+		cv::Mat t = tmp * m1;
+		cv::arrowedLine(background, center - cv::Point(t.at<double>(0, 0) / 2, t.at<double>(0, 1) / 2),
+			center + cv::Point(t.at<double>(0, 0) / 2, t.at<double>(0, 1) / 2), 255);
+
+		return background;
 	}
 };
 #endif // LOPATA_H

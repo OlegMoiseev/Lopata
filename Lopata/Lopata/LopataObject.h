@@ -10,6 +10,13 @@
  */
 struct Lopata
 {
+	const int _calibrationPixelDistanceBetweenDiodes = 236;
+	const int _calibrationHeigth = 50;
+
+	const double _pi = acos(-1);
+	const double _halfPi = _pi / 2;
+	const double _morePi = _pi * 3 / 2;
+
 	double _xBound;
 	double _yBound;
 
@@ -32,11 +39,11 @@ struct Lopata
 	/**
 	 * \brief Distance between diodes on the Lopata in millimeters
 	 */
-	const double _distBetweenDiodes = 25.;
+	const double _realDistBetweenDiodes = 25.;
 	/**
-	* \brief Distance between diodes on the image fromcamera in pixels
+	* \brief Distance between diodes on the image from camera in pixels
 	*/
-	double _realPixelDistanceBetweenDiodes;
+	double _lenghtPixelProjectionBetweenDiodes;
 	/**
 	 * \brief Radius of the cylindrical part of the Lopata
 	 */
@@ -75,7 +82,7 @@ struct Lopata
 	/**
 	* \brief Calculating height of the Lopata
 	*/
-	void ñoordinatesIntoThreeDimensional();
+	void calculateThirdCoordinate();
 
 	/**
 	* \brief Scaling coordinates depending on the height
