@@ -1,5 +1,5 @@
 #include "workWithCamera.h"
-#include "CameraCalibration.h"
+#include "CamCalibWI.h"
 #include "Robots.h"
 #include "ImuModule.h"
 #include "LopataFinder.h"
@@ -12,7 +12,7 @@ void detectControlHandlePosition(const bool& connection)
 	PololuImuV5 imu(L"COM3");
 
 	cv::VideoCapture webCamera(0);
-	timur::CameraCalibration camCalib(cv::Size(9, 6), 0.026f);
+	timur::CamCalibWi camCalib("CamCalib");
 
 	LopataFinder finder(webCamera, camCalib);
 	Lopata object;
@@ -20,7 +20,8 @@ void detectControlHandlePosition(const bool& connection)
 	{
 		imu.startReading();
 
-		std::thread imuThread(PololuImuV5::readOutImu, &imu, std::ref(object._quaternionOfLopataRotation));
+		std::thread imuThread(PololuImuV5::readOutImu, &imu,
+		                      std::ref(object._quaternionOfLopataRotation));
 
 		finder.detectDiodes(object);
 
@@ -30,7 +31,8 @@ void detectControlHandlePosition(const bool& connection)
 
 		object.ñorrectCoordinates();
 
-		std::cout << object._centerXCoordinatesOfLopata << '\t' << object._centerYCoordinatesOfLopata << '\t' << object._altitude << '\n';
+		std::cout << object._centerXCoordinatesOfLopata << '\t' << object._centerYCoordinatesOfLopata <<
+				'\t' << object._altitude << '\n';
 
 		//object.scalingCoordinates();
 
@@ -49,6 +51,7 @@ void detectControlHandlePosition(const bool& connection)
 
 void cvVersionOnScreen()
 {
-	std::cout << "Computer vision! OpenCV ver. " << CV_MAJOR_VERSION << '.' << CV_MINOR_VERSION << '.' <<
-		CV_SUBMINOR_VERSION << std::endl;
+	std::cout << "Computer vision! OpenCV ver. " << CV_MAJOR_VERSION << '.' << CV_MINOR_VERSION << '.'
+			<<
+			CV_SUBMINOR_VERSION << std::endl;
 }

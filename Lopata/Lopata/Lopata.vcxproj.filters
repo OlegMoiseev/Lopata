@@ -13,40 +13,43 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Fanuc">
+      <UniqueIdentifier>{07b1bdd7-662f-4c1b-89a9-ea8f6c8cbb74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IMU">
+      <UniqueIdentifier>{59306967-6bbb-4186-bb23-4f3e27f7290a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera calibrating">
+      <UniqueIdentifier>{beb13cb3-9e9b-4449-a25c-d19c966f69ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraCalibration.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="ImuModule.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="LopataFinder.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="LopataObject.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="MathForIMU.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="Robots.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="workWithCamera.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="Robots.h">
+      <Filter>Fanuc</Filter>
+    </ClInclude>
+    <ClInclude Include="ImuModule.h">
+      <Filter>IMU</Filter>
+    </ClInclude>
+    <ClInclude Include="MathForIMU.h">
+      <Filter>IMU</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraCalibration.h">
+      <Filter>Camera calibrating</Filter>
+    </ClInclude>
+    <ClInclude Include="CamCalibWI.h">
+      <Filter>Camera calibrating</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CameraCalibration.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="FanucM20iA.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
-    <ClCompile Include="MathForImu.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="Source.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
@@ -56,14 +59,22 @@
     <ClCompile Include="LopataObject.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="ImuModule.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="LopataFinder.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="FanucM20iA.cpp">
+      <Filter>Fanuc</Filter>
+    </ClCompile>
+    <ClCompile Include="ImuModule.cpp">
+      <Filter>IMU</Filter>
+    </ClCompile>
+    <ClCompile Include="MathForImu.cpp">
+      <Filter>IMU</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
+    <Text Include="CamCalib.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

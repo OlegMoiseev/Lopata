@@ -9,7 +9,7 @@
 #include "CameraCalibration.h"
 #include "LopataObject.h"
 #include "ImuModule.h"
-
+#include "CamCalibWI.h"
 
 class LopataFinder
 {
@@ -20,7 +20,7 @@ class LopataFinder
 	/**
 	 * \brief Calibration of camera by Timur
 	 */
-	timur::CameraCalibration _camCalib;
+	timur::CamCalibWi _camCalib;
 	/**
 	 * \brief Size of capture: rows
 	 */
@@ -118,7 +118,7 @@ public:
 	 * \param cam Used camera
 	 * \param calib Used calibration
 	 */
-	explicit LopataFinder(cv::VideoCapture& cam, timur::CameraCalibration& calib);
+	explicit LopataFinder(cv::VideoCapture& cam, timur::CamCalibWi& calib);
 
 	/**
 	 * \brief Function of occurence of two points

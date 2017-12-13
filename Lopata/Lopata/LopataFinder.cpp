@@ -88,7 +88,7 @@ void LopataFinder::detectKeypoints(cv::Ptr<cv::SimpleBlobDetector> primaryBlobDe
 	}
 }
 
-LopataFinder::LopataFinder(cv::VideoCapture& cam, timur::CameraCalibration& calib)
+LopataFinder::LopataFinder(cv::VideoCapture& cam, timur::CamCalibWi& calib)
 	: _webCamera(cam),
 	  _camCalib(calib)
 {
@@ -99,7 +99,6 @@ LopataFinder::LopataFinder(cv::VideoCapture& cam, timur::CameraCalibration& cali
 	std::cout << "Camera opened successfully!" << std::endl;
 
 	frameSizeDetermination();
-	_camCalib.loadCameraCalibration("CamCalib.txt");
 
 	detectorParamsSetup();
 	_primaryBlobDetectorDark = cv::SimpleBlobDetector::create(_parametersForPrimaryDetectorDark);
