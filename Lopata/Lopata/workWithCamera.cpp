@@ -39,7 +39,7 @@ void detectControlHandlePosition(const bool& connection)
 		std::cout << object._centerXCoordinatesOfLopata << '\t' << object._centerYCoordinatesOfLopata <<
 				'\t' << object._altitude << '\n';
 
-		//object.scalingCoordinates();
+		object.scalingCoordinates();
 
 		robo.sendCoordinates(object);
 

@@ -5,7 +5,7 @@
 
 void Lopata::scalingCoordinates()
 {
-	const double rel = _calibrationPixelDistanceBetweenDiodes / _realDistBetweenDiodes;
+	const double rel = _calibrationLenghtPixelProjectionBetweenDiodes / _lenghtPixelProjectionBetweenDiodes;
 	_xBound = 640. * rel;
 	_yBound = 480. * rel;
 

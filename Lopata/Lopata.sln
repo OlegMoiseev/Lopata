@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lopata", "Lopata\Lopata.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest1", "UnitTest1\UnitTest1.vcxproj", "{82C8954C-ABC7-4819-8D0F-D498B22D4A70}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest2", "UnitTest2\UnitTest2.vcxproj", "{AEA11CF8-C65A-41BA-B784-4BDFB595A34D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{82C8954C-ABC7-4819-8D0F-D498B22D4A70}.Release|x64.Build.0 = Release|x64
 		{82C8954C-ABC7-4819-8D0F-D498B22D4A70}.Release|x86.ActiveCfg = Release|Win32
 		{82C8954C-ABC7-4819-8D0F-D498B22D4A70}.Release|x86.Build.0 = Release|Win32
+		{AEA11CF8-C65A-41BA-B784-4BDFB595A34D}.Debug|x64.ActiveCfg = Debug|x64
+		{AEA11CF8-C65A-41BA-B784-4BDFB595A34D}.Debug|x64.Build.0 = Debug|x64
+		{AEA11CF8-C65A-41BA-B784-4BDFB595A34D}.Debug|x86.ActiveCfg = Debug|Win32
+		{AEA11CF8-C65A-41BA-B784-4BDFB595A34D}.Debug|x86.Build.0 = Debug|Win32
+		{AEA11CF8-C65A-41BA-B784-4BDFB595A34D}.Release|x64.ActiveCfg = Release|x64
+		{AEA11CF8-C65A-41BA-B784-4BDFB595A34D}.Release|x64.Build.0 = Release|x64
+		{AEA11CF8-C65A-41BA-B784-4BDFB595A34D}.Release|x86.ActiveCfg = Release|Win32
+		{AEA11CF8-C65A-41BA-B784-4BDFB595A34D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

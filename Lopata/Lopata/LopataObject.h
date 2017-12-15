@@ -14,7 +14,7 @@
  */
 struct Lopata
 {
-	const int _calibrationPixelDistanceBetweenDiodes = 236;
+	const int _calibrationLenghtPixelProjectionBetweenDiodes = 236;
 	const int _calibrationHeigth = 50;
 
 	const double _pi = acos(-1);
@@ -62,7 +62,7 @@ struct Lopata
 		{54.0093, 420},
 		{53.0377, 430},
 		{52.0384, 440},
-		{50.01, 460},
+		{50.01,	460},
 		{49.0408, 470},
 		{48.0104, 480},
 		{47.0106, 490},
