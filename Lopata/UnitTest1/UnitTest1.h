@@ -24,6 +24,8 @@ namespace unitTestsLopata
 		TEST_METHOD(testMid1);
 		TEST_METHOD(testMid2);
 		TEST_METHOD(testNonTableMid0);
+		TEST_METHOD(testLessThanTableHeight0);
+		TEST_METHOD(testMoreThanTableHeight0);
 
 	};
 }

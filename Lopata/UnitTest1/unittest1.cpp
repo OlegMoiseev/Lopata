@@ -41,3 +41,17 @@ void unitTestsLopata::CheckCalcFunctions::testNonTableMid0()
 	const double expectedAnswer = 214.002;
 	Assert::AreEqual(expectedAnswer, tmpAnswer, 1e-2, L"!ERROR!");
 }
+
+void unitTestsLopata::CheckCalcFunctions::testLessThanTableHeight0()
+{
+	const double tmpAnswer = _lopataToTest.calculatePointOnGraph(270.55);
+	const double expectedAnswer = 82.76;
+	Assert::AreEqual(expectedAnswer, tmpAnswer, 1e-2, L"!ERROR!");
+}
+
+void unitTestsLopata::CheckCalcFunctions::testMoreThanTableHeight0()
+{
+	const double tmpAnswer = _lopataToTest.calculatePointOnGraph(35.72);
+	const double expectedAnswer = 622.941;
+	Assert::AreEqual(expectedAnswer, tmpAnswer, 1e-2, L"!ERROR!");
+}
