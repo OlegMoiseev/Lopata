@@ -28,7 +28,8 @@ struct MultConstants
 } MULT;
 
 robot::FanucM20iA::FanucM20iA(const int c)
-	: _connect(c)
+	: HOMEPOS({985000., 0., 940000., 180000., 0., 0}),
+	  _connect(c)
 {
 	if (_connect)
 	{
@@ -40,7 +41,7 @@ robot::FanucM20iA::FanucM20iA(const int c)
 	}
 }
 
-bool robot::FanucM20iA::canSendCoordinates(Lopata &obj) const
+bool robot::FanucM20iA::canSendCoordinates(Lopata& obj) const
 {
 	return obj.sendCoordinates & _connect;
 }
@@ -60,8 +61,9 @@ bool robot::FanucM20iA::initSockets()
 
 void robot::FanucM20iA::info() const
 {
-	std::cout << "Port to send: " << _ports << std::endl << "Port to recieve: " << _portr << std::endl << "IP: " <<
-		_tmpAddrString << std::endl;
+	std::cout << "Port to send: " << _ports << std::endl << "Port to recieve: " << _portr << std::endl
+			<< "IP: " <<
+			_tmpAddrString << std::endl;
 }
 
 bool robot::FanucM20iA::start()
@@ -104,7 +106,8 @@ bool robot::FanucM20iA::conSocket() const
 
 bool robot::FanucM20iA::sendany(const char* str) const
 {
-	const int iResult = send(_mySock, str, static_cast<int>(strlen(str)), 0); //посылаем данные из буфера
+	const int iResult = send(_mySock, str, static_cast<int>(strlen(str)), 0);
+	//посылаем данные из буфера
 	if (iResult == SOCKET_ERROR)
 	{
 		std::cout << "Send failed with error: " << WSAGetLastError() << std::endl;
@@ -138,21 +141,27 @@ bool robot::FanucM20iA::finish() const
 
 void robot::FanucM20iA::createCartesianCoordinates(Lopata& obj)
 {
-	obj._cartesianCoordinates[0] = maxValueOf._x - obj._centerYCoordinatesOfLopata * MULT._x;
-	obj._cartesianCoordinates[1] = minValueOf._y + obj._centerXCoordinatesOfLopata * MULT._y;
+	obj._cartesianCoordinates[0] = HOMEPOS[0] + obj._centerYCoordinatesOfLopata * MULT._x;
+	obj._cartesianCoordinates[1] = HOMEPOS[1] + obj._centerXCoordinatesOfLopata * MULT._y;
 	obj._cartesianCoordinates[2] = minValueOf._z + static_cast<int>(obj._altitude) * MULT._z;
 }
 
 void robot::FanucM20iA::checkCoordsLimits(Lopata& obj)
 {
-	if (obj._cartesianCoordinates[0] > maxValueOf._x) obj._cartesianCoordinates[0] = maxValueOf._x;
-	if (obj._cartesianCoordinates[0] < minValueOf._x) obj._cartesianCoordinates[0] = minValueOf._x;
+	if (obj._cartesianCoordinates[0] > maxValueOf._x)
+		obj._cartesianCoordinates[0] = maxValueOf._x;
+	if (obj._cartesianCoordinates[0] < minValueOf._x)
+		obj._cartesianCoordinates[0] = minValueOf._x;
 
-	if (obj._cartesianCoordinates[1] > maxValueOf._y) obj._cartesianCoordinates[1] = maxValueOf._y;
-	if (obj._cartesianCoordinates[1] < minValueOf._y) obj._cartesianCoordinates[1] = minValueOf._y;
+	if (obj._cartesianCoordinates[1] > maxValueOf._y)
+		obj._cartesianCoordinates[1] = maxValueOf._y;
+	if (obj._cartesianCoordinates[1] < minValueOf._y)
+		obj._cartesianCoordinates[1] = minValueOf._y;
 
-	if (obj._cartesianCoordinates[2] > maxValueOf._z) obj._cartesianCoordinates[2] = maxValueOf._z;
-	if (obj._cartesianCoordinates[2] < minValueOf._z) obj._cartesianCoordinates[2] = minValueOf._z;
+	if (obj._cartesianCoordinates[2] > maxValueOf._z)
+		obj._cartesianCoordinates[2] = maxValueOf._z;
+	if (obj._cartesianCoordinates[2] < minValueOf._z)
+		obj._cartesianCoordinates[2] = minValueOf._z;
 }
 
 void robot::FanucM20iA::sendCoordinates(Lopata& obj) const

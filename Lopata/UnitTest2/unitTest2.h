@@ -9,7 +9,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace unitTestsLopataHeight
+namespace unitTestsLopataScale
 {
 	TEST_CLASS(CheckScaleFunctions)
 	{
@@ -17,9 +17,15 @@ namespace unitTestsLopataHeight
 		Lopata _lopataToTest;
 	public:
 
-		TEST_METHOD(testMid0);
-		TEST_METHOD(testMid1);
-		TEST_METHOD(testMid2);
+		TEST_METHOD(testScale0);
+		TEST_METHOD(testScale1);
+		TEST_METHOD(testScale2);
+		TEST_METHOD(testScale3);
 
+		TEST_METHOD(testScale4);
+		TEST_METHOD(testScale5);
+		TEST_METHOD(testScale6);
+		TEST_METHOD(testScale7);
+		TEST_METHOD(testScale8);
 	};
 }

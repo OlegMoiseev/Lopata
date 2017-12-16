@@ -3,10 +3,9 @@
 
 void LopataFinder::frameSizeDetermination()
 {
-	cv::Mat rawImageFromCamera;
-	_webCamera >> rawImageFromCamera;
-	_rows = rawImageFromCamera.rows;
-	_cols = rawImageFromCamera.cols;
+	_rows = _webCamera.get(cv::CAP_PROP_FRAME_HEIGHT);
+	_cols = _webCamera.get(cv::CAP_PROP_FRAME_WIDTH);
+
 	std::cout << _cols << "x" << _rows << std::endl;
 }
 
@@ -267,12 +266,12 @@ void LopataFinder::drawKeypoints(Lopata& obj)
 		           -1);
 
 		cv::circle(matrixOfDiodes,
-		           cv::Point(obj._centerXCoordinatesOfLopata, obj._centerYCoordinatesOfLopata),
+		           cv::Point(obj.xCenterImg, obj.yCenterImg),
 		           static_cast<int>(obj._resultKeypointsOfDetectedDiodes[1].size / 2), cv::Scalar(255),
 		           2);
 
 		cv::circle(_rawImageFromCamera,
-		           cv::Point(obj._centerXCoordinatesOfLopata, obj._centerYCoordinatesOfLopata),
+		           cv::Point(obj.xCenterImg, obj.yCenterImg),
 		           static_cast<int>(obj._resultKeypointsOfDetectedDiodes[1].size / 2), cv::Scalar(255),
 		           2);
 	}

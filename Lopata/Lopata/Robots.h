@@ -58,6 +58,11 @@ namespace robot {
 		bool _connect;
 
 		/**
+		* \brief Homepos of robot
+		*/
+		static const std::array<double, 6> HOMEPOS;
+
+		/**
 		 * \brief Function of the initializing connection to the robot
 		 * \return True if initialization successfull
 		 */
@@ -106,6 +111,7 @@ namespace robot {
 		static void thresholdFilterCartesianCoordinates(Lopata& obj, std::ostringstream &tmpBuf);
 
 	public:
+
 		/**
 		 * \brief Constructor with initializing and connecting to the Robot
 		 * \param[in] c If true connect to the robot 

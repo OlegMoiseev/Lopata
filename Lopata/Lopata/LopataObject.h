@@ -14,12 +14,14 @@
  */
 struct Lopata
 {
-	const int _calibrationLenghtPixelProjectionBetweenDiodes = 236;
-	const int _calibrationHeigth = 50;
 
 	const double _pi = acos(-1);
 	const double _halfPi = _pi / 2;
 	const double _morePi = _pi * 3 / 2;
+
+	// variables to correct draw on the image - save non-scaled coordinates
+	double xCenterImg;
+	double yCenterImg;
 
 	double _xBound;
 	double _yBound;
@@ -84,11 +86,11 @@ struct Lopata
 	/**
 	 * \brief X coordinate of Lopata
 	 */
-	unsigned int _centerXCoordinatesOfLopata;
+	double _centerXCoordinatesOfLopata;
 	/**
 	* \brief Y coordinate of Lopata
 	*/
-	unsigned int _centerYCoordinatesOfLopata;
+	double _centerYCoordinatesOfLopata;
 	/**
 	* \brief Z coordinate of Lopata
 	*/

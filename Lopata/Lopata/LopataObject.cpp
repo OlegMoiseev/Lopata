@@ -5,12 +5,18 @@
 
 void Lopata::scalingCoordinates()
 {
-	const double rel = _calibrationLenghtPixelProjectionBetweenDiodes / _lenghtPixelProjectionBetweenDiodes;
+	const double rel = _altitude / 300.;  // height where we want to get scale 1:1 between robot and hand.
 	_xBound = 640. * rel;
 	_yBound = 480. * rel;
 
-	_centerXCoordinatesOfLopata *= _xBound / 640.;
-	_centerYCoordinatesOfLopata *= _yBound / 480.;
+	const double startPointX = _xBound / 2;
+	const double startPointY = _yBound / 2;
+
+	xCenterImg = _centerXCoordinatesOfLopata;
+	yCenterImg = _centerYCoordinatesOfLopata;
+
+	_centerXCoordinatesOfLopata = _centerXCoordinatesOfLopata * _xBound / 640. - startPointX;
+	_centerYCoordinatesOfLopata = _centerYCoordinatesOfLopata * _yBound / 480. - startPointY;
 }
 
 void Lopata::ñorrectCoordinates()
@@ -62,6 +68,10 @@ void Lopata::ñorrectCoordinates()
 	_altitude -= mVect2._z;
 	_centerXCoordinatesOfLopata += static_cast<int>(mVect2._x);
 	_centerYCoordinatesOfLopata += static_cast<int>(mVect2._y);
+
+	xCenterImg += static_cast<int>(mVect2._x);
+	yCenterImg += static_cast<int>(mVect2._y);
+
 }
 
 void Lopata::calculateThirdCoordinate()
@@ -85,9 +95,6 @@ void Lopata::calculateThirdCoordinate()
 		_calibrationHeigth;*/
 
 	const double hypotenuse = _lenghtPixelProjectionBetweenDiodes / cosAngle;
-
-	//_altitude = (hypotenuse - hIter->second)*(hIter->first - hIterNext->first)/(hIterNext->second - hIter->second) + hIter->first;
-	//_altitude = (hypotenuse - hIter->first)*(hIter->second - hIterNext->second) / (hIterNext->first - hIter->first) + hIter->second;
 	_altitude = calculatePointOnGraph(hypotenuse);
 }
 
