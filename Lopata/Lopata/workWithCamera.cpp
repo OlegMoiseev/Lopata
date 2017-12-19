@@ -13,34 +13,30 @@ void detectControlHandlePosition(const bool& connection)
 
 	PololuImuV5 imu(L"COM3");
 
-	cv::VideoCapture webCamera(0);
+	cv::VideoCapture webCamera(1);
 
 	timur::CamCalibWi camCalib("CamCalib.txt");
 
 	LopataFinder finder(webCamera, camCalib);
 	Lopata object;
+	std::thread imuThread(PololuImuV5::readOutImu, &imu, std::ref(object._quaternionOfLopataRotation));
 	while (true)
 	{
 		imu.startReading();
 
-		std::thread imuThread(PololuImuV5::readOutImu, &imu,
-		                      std::ref(object._quaternionOfLopataRotation));
-
 		finder.detectDiodes(object);
 
-		finder.calculateDiodesCoordinates(imu, object, imuThread);
+		finder.calculateDiodesCoordinates(imu, object);
 
 		object.calculateThirdCoordinate();
-
-		system("cls");
-		std::cout << "Before correcting: " << object._altitude << std::endl;
 
 		object.ñorrectCoordinates();
 
 		object.scalingCoordinates();
 
-		std::cout << object._centerXCoordinatesOfLopata << '\t' << object._centerYCoordinatesOfLopata <<
-			'\t' << object._altitude << '\n';
+		system("cls");
+		std::cout << object._localXCoordinatesOfLopata << '\t' << object._localYCoordinatesOfLopata
+			<< '\t' << object._altitude << '\n';
 
 		robo.sendCoordinates(object);
 
@@ -58,6 +54,6 @@ void detectControlHandlePosition(const bool& connection)
 void cvVersionOnScreen()
 {
 	std::cout << "Computer vision! OpenCV ver. " << CV_MAJOR_VERSION << '.' << CV_MINOR_VERSION << '.'
-			<<
-			CV_SUBMINOR_VERSION << std::endl;
+		<<
+		CV_SUBMINOR_VERSION << std::endl;
 }

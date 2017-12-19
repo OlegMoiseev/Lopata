@@ -86,11 +86,11 @@ struct Lopata
 	/**
 	 * \brief X coordinate of Lopata
 	 */
-	double _centerXCoordinatesOfLopata;
+	double _localXCoordinatesOfLopata;
 	/**
 	* \brief Y coordinate of Lopata
 	*/
-	double _centerYCoordinatesOfLopata;
+	double _localYCoordinatesOfLopata;
 	/**
 	* \brief Z coordinate of Lopata
 	*/

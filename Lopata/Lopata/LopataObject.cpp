@@ -12,11 +12,11 @@ void Lopata::scalingCoordinates()
 	const double startPointX = _xBound / 2;
 	const double startPointY = _yBound / 2;
 
-	xCenterImg = _centerXCoordinatesOfLopata;
-	yCenterImg = _centerYCoordinatesOfLopata;
+	xCenterImg = _localXCoordinatesOfLopata;
+	yCenterImg = _localYCoordinatesOfLopata;
 
-	_centerXCoordinatesOfLopata = _centerXCoordinatesOfLopata * _xBound / 640. - startPointX;
-	_centerYCoordinatesOfLopata = _centerYCoordinatesOfLopata * _yBound / 480. - startPointY;
+	_localXCoordinatesOfLopata = _localXCoordinatesOfLopata * _xBound / 640. - startPointX;
+	_localYCoordinatesOfLopata = _localYCoordinatesOfLopata * _yBound / 480. - startPointY;
 }
 
 void Lopata::ñorrectCoordinates()
@@ -31,27 +31,27 @@ void Lopata::ñorrectCoordinates()
 
 	if (-45. < roll && roll <= 45.)
 	{
-		std::cout << roll << "\tUP" << std::endl;
+		// std::cout << roll << "\tUP" << std::endl;
 		angle = _pi;
 	}
 	else if (45. < roll && roll <= 135.)
 	{
-		std::cout << roll << "\tRIGHT" << std::endl;
+		// std::cout << roll << "\tRIGHT" << std::endl;
 		angle = _morePi;
 	}
 	else if (135. < roll && roll <= 180.)
 	{
-		std::cout << roll << "\tDOWN" << std::endl;
+		// std::cout << roll << "\tDOWN" << std::endl;
 		angle = 0.;
 	}
 	else if (-180. < roll && roll <= -135.)
 	{
-		std::cout << roll << "\tDOWN" << std::endl;
+		// std::cout << roll << "\tDOWN" << std::endl;
 		angle = 0.;
 	}
 	else if (-135. < roll && roll <= -45.)
 	{
-		std::cout << roll << "\tLEFT" << std::endl;
+		// std::cout << roll << "\tLEFT" << std::endl;
 		angle = _halfPi;
 	}
 
@@ -66,8 +66,8 @@ void Lopata::ñorrectCoordinates()
 
 	// correct our Cartesian coordinates.
 	_altitude -= mVect2._z;
-	_centerXCoordinatesOfLopata += static_cast<int>(mVect2._x);
-	_centerYCoordinatesOfLopata += static_cast<int>(mVect2._y);
+	_localXCoordinatesOfLopata += static_cast<int>(mVect2._x);
+	_localYCoordinatesOfLopata += static_cast<int>(mVect2._y);
 
 	xCenterImg += static_cast<int>(mVect2._x);
 	yCenterImg += static_cast<int>(mVect2._y);

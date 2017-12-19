@@ -24,6 +24,7 @@ namespace robot {
 	 * \brief Class of robot with connecting and sending coordinates
 	 */
 	class FanucM20iA {
+	private:
 		/**
 		 * \brief Socket to sending data to the robot
 		 */
@@ -60,7 +61,7 @@ namespace robot {
 		/**
 		* \brief Homepos of robot
 		*/
-		static const std::array<double, 6> HOMEPOS;
+		static const std::array<double, 6> homepos;
 
 		/**
 		 * \brief Function of the initializing connection to the robot

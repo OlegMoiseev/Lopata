@@ -161,16 +161,17 @@ void LopataFinder::detectDiodes(Lopata& obj)
 	                            obj._resultKeypointsOfDetectedDiodes);
 }
 
-void LopataFinder::calculateDiodesCoordinates(PololuImuV5& imu, Lopata& obj, std::thread& imuThread)
+void LopataFinder::calculateDiodesCoordinates(PololuImuV5& imu, Lopata& obj)
 {
+	//TODO: rewrite with mutexes!!!
 	if (_firstOccurrenceOfTwoPoints && obj._resultKeypointsOfDetectedDiodes.size() == 2)
 	{
 		_previousPoints.first = obj._resultKeypointsOfDetectedDiodes[0];
 		_previousPoints.second = obj._resultKeypointsOfDetectedDiodes[1];
 		_firstOccurrenceOfTwoPoints = false;
-		imu.stopReading();
+		//imu.stopReading();
 		obj.allowSend();
-		imuThread.join(); // End thread with IMU
+		//imuThread.join(); // End thread with IMU
 	}
 	else
 	{
@@ -207,20 +208,20 @@ void LopataFinder::calculateDiodesCoordinates(PololuImuV5& imu, Lopata& obj, std
 			const unsigned int secondY = static_cast<unsigned int>(obj._resultKeypointsOfDetectedDiodes[1].
 				pt.y);
 
-			obj._centerXCoordinatesOfLopata = static_cast<unsigned int>((firstX + secondX) / 2);
-			obj._centerYCoordinatesOfLopata = static_cast<unsigned int>((firstY + secondY) / 2);
+			obj._localXCoordinatesOfLopata = static_cast<unsigned int>((firstX + secondX) / 2);
+			obj._localYCoordinatesOfLopata = static_cast<unsigned int>((firstY + secondY) / 2);
 
 			obj._lenghtPixelProjectionBetweenDiodes = getDistanceBetweenPoints(firstX, secondX, firstY,
 			                                                                   secondY);
 
-			imu.stopReading();
-			imuThread.join(); // End thread with IMU
+			//imu.stopReading();
+			//imuThread.join(); // End thread with IMU
 			// avnike@outlook.com
 		}
 		else
 		{
-			imu.stopReading();
-			imuThread.join(); // End thread with IMU
+			//imu.stopReading();
+			//imuThread.join(); // End thread with IMU
 		}
 	}
 }

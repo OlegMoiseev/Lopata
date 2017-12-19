@@ -7,16 +7,16 @@
 
 struct ExtremeValuesMax
 {
-	const int _x = 1260000;
-	const int _y = 240000;
+	const int _x = 1380000;
+	const int _y = 465000;
 	const int _z = 1200000;
 } maxValueOf;
 
 struct ExtremeValuesMin
 {
 	const int _x = 620000;
-	const int _y = -240000;
-	const int _z = 740000;
+	const int _y = -465000;
+	const int _z = 410000;
 } minValueOf;
 
 struct MultConstants
@@ -27,9 +27,10 @@ struct MultConstants
 	const int _degrees = 1000;
 } MULT;
 
+const std::array<double, 6> robot::FanucM20iA::homepos = { 985000., 0., 940000., 180000., 0., 0 };
+
 robot::FanucM20iA::FanucM20iA(const int c)
-	: HOMEPOS({985000., 0., 940000., 180000., 0., 0}),
-	  _connect(c)
+	: _connect(c)
 {
 	if (_connect)
 	{
@@ -141,8 +142,8 @@ bool robot::FanucM20iA::finish() const
 
 void robot::FanucM20iA::createCartesianCoordinates(Lopata& obj)
 {
-	obj._cartesianCoordinates[0] = HOMEPOS[0] + obj._centerYCoordinatesOfLopata * MULT._x;
-	obj._cartesianCoordinates[1] = HOMEPOS[1] + obj._centerXCoordinatesOfLopata * MULT._y;
+	obj._cartesianCoordinates[0] = homepos.at(0) + obj._localYCoordinatesOfLopata * MULT._x;
+	obj._cartesianCoordinates[1] = homepos.at(1) + obj._localXCoordinatesOfLopata * MULT._y;
 	obj._cartesianCoordinates[2] = minValueOf._z + static_cast<int>(obj._altitude) * MULT._z;
 }
 

@@ -12,6 +12,8 @@
 #include "CamCalibWI.h"
 
 
+//TODO: rewrite with mutexes!!!
+
 class LopataFinder
 {
 	/**
@@ -137,10 +139,9 @@ public:
 	 * \brief Function of final processing of gotten data and send it to robot, if it is possible
 	 * \param[in] imu IMU sensor
 	 * \param[in] obj Lopata object
-	 * \param[in] imuThread Thread of getting data from IMU
+	 * TODO: rewrite with mutexes!!!
 	 */
-	void calculateDiodesCoordinates(PololuImuV5& imu, Lopata& obj,
-	                                std::thread& imuThread);
+	void calculateDiodesCoordinates(PololuImuV5& imu, Lopata& obj);
 
 	/**
 	 * \brief Function of drawing diodes and their common sensor on the raw and clear images
