@@ -74,6 +74,7 @@ void Lopata::ñorrectCoordinates()
 
 }
 
+
 void Lopata::calculateThirdCoordinate()
 {
 	Vector startVector(1, 0, 0);

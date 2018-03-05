@@ -13,12 +13,13 @@ void detectControlHandlePosition(const bool& connection)
 
 	PololuImuV5 imu(L"COM3");
 
-	cv::VideoCapture webCamera(1);
+	cv::VideoCapture webCamera(0);
 
 	timur::CamCalibWi camCalib("CamCalib.txt");
 
 	LopataFinder finder(webCamera, camCalib);
 	Lopata object;
+
 	std::thread imuThread(PololuImuV5::readOutImu, &imu, std::ref(object._quaternionOfLopataRotation));
 	while (true)
 	{
@@ -34,12 +35,11 @@ void detectControlHandlePosition(const bool& connection)
 
 		object.scalingCoordinates();
 
-		system("cls");
-		std::cout << object._localXCoordinatesOfLopata << '\t' << object._localYCoordinatesOfLopata
-			<< '\t' << object._altitude << '\n';
-
 		robo.sendCoordinates(object);
 
+       /* system("cls");
+        std::cout << object._localXCoordinatesOfLopata << '\t' << object._localYCoordinatesOfLopata
+            << '\t' << object._altitude << '\n';*/
 		finder.drawKeypoints(object);
 
 		if (cv::waitKey(30) == 27)

@@ -3,7 +3,7 @@
 
 int main()
 {
-	constexpr bool connection = false;
+	constexpr bool connection = true;
 	cvVersionOnScreen();
 	detectControlHandlePosition(connection);
 	return 0;

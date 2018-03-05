@@ -44,9 +44,9 @@ namespace robot {
 		/**
 		 * \brief Robot's IP
 		 */
-		//std::string _tmpAddrString = "192.168.0.21";
+		std::string _tmpAddrString = "172.27.221.60";
 		
-		std::string _tmpAddrString = "127.0.0.1";
+		//std::string _tmpAddrString = "127.0.0.1";
 
 		/**
 		 * \brief Buffer to initialize WinSock
@@ -111,6 +111,10 @@ namespace robot {
 		*/
 		static void thresholdFilterCartesianCoordinates(Lopata& obj, std::ostringstream &tmpBuf);
 
+        //TODO: DELETE THIS SHIT, YOU MUSTN'T USE STATIC HERE, IT'S INCORRECT!!! MAN, WHO WROTE IT, MUST DIE!!!
+        static void movingAverageFilter(Lopata& obj);
+
+        bool _firstPoint = true;
 	public:
 
 		/**
@@ -150,7 +154,12 @@ namespace robot {
 		 * \brief Function of sending coordinates to the robot with all checks
 		 * \param obj Lopata, which coordinates need to send
 		 */
-		void sendCoordinates(Lopata& obj) const;
+		void sendCoordinates(Lopata& obj);
+
+        void dontFirst()
+        {
+            _firstPoint = false;
+        }
 	};
 }
 #endif // !_ROBOTS

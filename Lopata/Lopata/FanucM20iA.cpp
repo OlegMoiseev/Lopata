@@ -165,17 +165,30 @@ void robot::FanucM20iA::checkCoordsLimits(Lopata& obj)
 		obj._cartesianCoordinates[2] = minValueOf._z;
 }
 
-void robot::FanucM20iA::sendCoordinates(Lopata& obj) const
+void robot::FanucM20iA::sendCoordinates(Lopata& obj)
 {
+
+    movingAverageFilter(obj);
+
 	robot::FanucM20iA::createCartesianCoordinates(obj);
 	robot::FanucM20iA::checkCoordsLimits(obj);
 
 	const char* sendbuf = robot::FanucM20iA::createStringToSend(obj);
 
+    system("cls");
+    std::cout << sendbuf << '\n';
+
 	if (this->canSendCoordinates(obj))
 	{
-		this->sendany(sendbuf);
-	}
+        if (this->_firstPoint)
+        {
+            this->dontFirst();
+        }
+        else
+        {
+            this->sendany(sendbuf);
+        }
+    }
 }
 
 void robot::FanucM20iA::thresholdFilterAngles(Lopata& obj, std::ostringstream& tmpBuf)
@@ -210,6 +223,37 @@ void robot::FanucM20iA::thresholdFilterCartesianCoordinates(Lopata& obj, std::os
 			tmpBuf << obj._oldCartesianCoordinates[i] << ' ';
 		}
 	}
+}
+
+void robot::FanucM20iA::movingAverageFilter(Lopata& obj)
+{
+    if (obj._oldCartesianForAverage.size() == 5)
+    {
+        std::array<int, 3> cartesianTmp = { {0, 0, 0} };
+
+        for (size_t i = 0; i < obj._oldCartesianForAverage.size(); ++i)
+        {
+            for (size_t j = 0; j < 3; ++j)
+            {
+                if (i != obj._oldCartesianForAverage.size() - 1)
+                {
+                    cartesianTmp.at(j) += obj._oldCartesianForAverage.at(i).at(j) / obj._oldCartesianForAverage.size();
+                }
+                else
+                {
+                    cartesianTmp.at(j) += obj._cartesianCoordinates.at(j) / obj._oldCartesianForAverage.size();
+                }
+            }
+        }
+        
+        obj._cartesianCoordinates = cartesianTmp;
+        obj._oldCartesianForAverage.pop_front();
+        obj._oldCartesianForAverage.emplace_back(cartesianTmp);
+    }
+    else
+    {
+        obj._oldCartesianForAverage.emplace_back(obj._cartesianCoordinates);
+    }
 }
 
 const char* robot::FanucM20iA::createStringToSend(Lopata& obj)

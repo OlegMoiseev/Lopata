@@ -7,6 +7,7 @@
 #include <opencv2/core/types.hpp>
 
 #include "MathForIMU.h"
+#include <deque>
 
 
 /**
@@ -137,6 +138,9 @@ struct Lopata
 	* \brief Cartesian coordinates from the previous iteration of the algorithm
 	*/
 	std::array<int, 3> _oldCartesianCoordinates{{0, 0, 0}};
+
+    std::deque<std::array<int, 3>> _oldCartesianForAverage;
+
 
 	/**
 	* \brief Correcting coordinates depending on the position of Lopata
